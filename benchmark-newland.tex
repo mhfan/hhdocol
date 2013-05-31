@@ -1,0 +1,272 @@
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % $ID: hhbf-devlog.tex Tue, 07 Sep 2004 23:30:19 +0800  mhfan $ %
+ %                                                              %
+ % Description:                                                 %
+ %                                                              %
+ % Maintainer:  范美辉(Meihui Fan)  <mhfan@ustc.edu>            %
+ %                                                              %
+ % CopyRight (c)  2004  HHTech                                  %
+ %   www.hhcn.com, www.hhcn.org                                 %
+ %   All rights reserved.                                       %
+ %                                                              %
+ % This file is free software;                                  %
+ %   you are free to modify and/or redistribute it  	        %
+ %   under the terms of the GNU General Public Licence (GPL).   %
+ %                                                              %
+ % Last modified: Mon, 11 Apr 2005 22:05:53 +0800      by mhfan #
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listfiles % (should list the files loaded and it's versions).
+
+\documentclass[a4paper]{scrartcl}  % letter, article, scrartcl, report, book
+			% 封面和扉页 % coverpage & titlepage
+			% default is 10pt, letterpaper; letter
+
+\usepackage{CJK,ifthen,inputenc,fontenc}%,ipalmacs
+\usepackage{latexsym,amssymb,amsfonts,textcomp,pxfonts,txfonts,pifont,bbding}
+\usepackage{marvosym,stmaryrd,ifsym,tipa,ulsy,dingbat,ipa,wasysym,manfnt} %
+\usepackage{longtable,multirow,hhline,dcolumn,tabularx,array}
+\usepackage{makeidx,verbatim,fancybox}
+
+\usepackage{fancyhdr}	% fancy header & footer, box
+\newcommand{\makeheadrule}{         % 定义页眉横线
+  \rule[.7\baselineskip]{\headwidth}{1.2pt}\vskip-0.97\baselineskip
+  \rule[.6\baselineskip]{\headwidth}{0.4pt}}
+%  \makebox[-3pt][l]{\rule[.7\baselineskip]{\headwidth}{0.4pt}}
+%  \rule[0.85\baselineskip]{\headwidth}{1.5pt}\vskip-.8\baselineskip}
+  \makeatletter
+  \renewcommand{\headrule}{
+  	{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi}\makeheadrule}
+  \makeatother
+
+\usepackage{graphicx,subfigure,wrapfig}	% for graph
+\graphicspath {{./}{figs/}} % set graphics path
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.jpg,.jpeg,.pdf,.gif,.png}
+%\DeclareGraphicsRule{.jpg}{eps}{}{`convert #1 eps:-}
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+\usepackage[a4paper,pdftex]{geometry}
+%\geometry{top=1.7cm,bottom=2cm,left=2.5cm,right=2.1cm}
+%\geometry{body={15.6cm, 20cm}, centering, dvipdfm}
+
+\usepackage[CJKbookmarks,dvipdf,bookmarks=true]{hyperref}
+% setup hyperref for PDF nevigation:
+  \hypersetup{colorlinks, linkcolor=blue, citecolor=blue, urlcolor=red,%
+	plainpages=true, bookmarksopen=false,%
+	pdfhighlight=/P, %/I(inverse) /N(no effect) /O(outline) /P(inset)
+	pdfauthor={Meihui Fan <mhfan@ustc.edu>},%
+	pdftitle={A LaTeX example collection},%
+	pdfsubject={LaTeX, TeX},%
+	pdfkeywords={LaTeX, TeX, Typesetting},%
+	pdfstartview=FitH, %FitBH, FitB
+	pdfview=FitH,
+	pdfpagemode=UseOutlines, %None, FullScreen, UseThumbs
+}
+
+\usepackage{listings} %[mathscope]
+  \lstloadlanguages{C++, bash, tcl, VHDL, Haskell, Lisp, TeX, Oz, Perl, make}
+  %\lstinline!char foo='c';!	% ! can be #, %, $, etc.
+  \lstset{language=C, tabsize=8, keepspaces=true,
+	columns=fixed, %flexiblecolumns=true,
+	numbers=left, stepnumber=1, numberstyle=\tiny,
+	basicstyle=\small\ttfamily, showspaces=false,
+	%identifierstyle=\color{blue},
+	stringstyle=\color{magenta},
+	keywordstyle=\color{green}\textbf,
+	commentstyle=\color{cyan}\bfseries\itshape,
+	%classoffset=2,
+	%morekeywords={typedef,struct,enum,int,long,unsigned},
+	%keywordstyle=[2]\color{green}\bfseries,
+	%breaklines=true, breakautoindent=true, breakindent=4em,
+	escapeinside={/*@}{@*/}
+}
+
+%\newcommand{}		% newcommand definition:
+%\renewcommand{}	% redefine command:
+%\renewcommand{\headrule}{}
+\renewcommand\labelitemi{\small\EightFlowerPetal}
+\renewcommand\labelitemii{\small\SixFlowerAltPetal}
+\renewcommand\labelitemiii{\small\FiveStarConvex}
+\setlength{\parskip}{4pt plus1pt minus1pt}
+\newcommand{\ucl}{$\muup$Clinux~}
+
+% Don't report over-full v/h-boxes if over-edge is small.
+\vfuzz 2pt \hfuzz 2pt
+\setlength{\parindent}{0em} %\parskip 3mm
+% indent 2 Chinese characters befor each paragraph.
+\setlength{\parindent}{2em} %\parskip 3mm
+\makeatletter		    % indent the first paragraph. [indentfirst]
+    \let\@afterindentfalse\@afterindenttrue
+    \@afterindenttrue
+\makeatother
+
+\begin{document} \begin{CJK*}{GBK}{song}
+
+\pagestyle{fancy}
+%\lhead{} \chead{} \rhead{}
+\lfoot{HH Tech China} %\rfoot{\today} \cfoot{}	% 第\thepage页（共\lastpage页）
+\CJKcaption{GB}
+
+\title{\Huge Newland 视频服务器性能测试报告\vspace{1cm}} % 标题
+\author{Version 0.0.1 \vspace{1cm} \\
+Meihui Fan \\ {\CJKfamily{kai} 范~美~辉} \\	% 作者
+$<$\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}$>$ \\
+%$<$\href{mailto:hhbf-support@hhcn.com}{hhbf-support@hhcn.com}$>$ \\
+% {{{
+%\texttt{<}\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}\texttt{>} \\
+%\texttt{\#}, \textless, \textgreater, \textlangle, \textrangle
+					% E-mail: mhfan@163.com
+%中国科学技术大学，生命科学学院 \\	% organization
+%安徽省合肥市四号信箱4号楼404室，230027} % address
+%\textit{Laboratory of Structural Biology, School of Life Science, USTC} \\
+%\textit{Room 4-404, P.O.Box 4, Hefei, Anhui, 230027 P. R. China} \\
+% }}}
+\vspace{2cm} \\ Copyleft \textcopyleft{} \number\year{}~ HHTech. Co., Ltd.
+\footnote{\href{http://www.hhcn.com}{http://www.hhcn.com}} \\
+All rights reserved. \\ \\ {\CJKfamily{li} 华恒科技　版权所有} \vspace{1cm}
+}
+%\date{}		% 日期
+\maketitle \titlepage	% generate the title, 标题页
+
+\iffalse
+\thanks{\bf\large ~ ~ ~Thanks}		% 致谢
+
+\begin{abstract}	% 摘要
+  \vspace{1cm} {\it Keywords: .}	% 关键字
+\end{abstract}
+\fi
+
+% {{{
+\newpage
+%\setcounter{tocdepth}{3}
+\tableofcontents	% 目录页
+\listoffigures
+\listoftables
+
+\newpage
+%\thispagestyle{fancy}
+% }}}
+
+\renewcommand\thefootnote{\tiny\textcircled{\arabic{footnote}}}
+%\renewcommand\thefootnote{\tiny\makebox[0pt][l]{\circle}{\arabic{footnote}}}
+%\renewcommand\thefootnote{\scriptsize\ding{191 + \arabic{footnote}}}
+
+\section{测试准备} \label{}
+\begin{description}
+  \item [前端播放板]：\ldots
+  \item [千兆交换机]：\ldots
+  \item [PC 机＋千兆网卡]：AMD Sempron(tm) 2500+, Debian GNU/Linux,
+    \\ RTL 8169 Gigabit Ethernet.
+  \item [视频素材]：gaokao.m2p: MPEG sequence, v2, program multiplex
+    (size: 423M).
+\end{description}
+
+前端播放板通过 NFS 连接视频服务器获取编码流播放、测试。
+
+\section{IUServer Benchmark} \label{}
+
+\subsection{硬件环境}
+\begin{description}
+  \item [CPU]: Dual Intel(R) Xeon(TM) CPU 2.40GHz
+  \item [硬盘]: 普通 SCSI 硬盘。
+  \item [网络接口]：2 $\times$ Intel(R) PRO/1000 Gigabit Ethernet
+\end{description}
+
+\subsection{软件环境}
+\begin{description}
+  \item [内核]：linux-2.6.11, customed
+  \item [应用软件]：vsftpd: version 2.0.1
+\end{description}
+
+\subsection{测试过程和结果}
+with deadline IO schedular.
+\subsubsection{单项测试}
+\begin{description}
+  \item [FTP]: 33-34 MB/s ／26-27 MB/s
+  \item [NFS]: 33-34 MB/s ／26-27 MB/s
+  \item [SMB/CIFS]: \ldots ／\ldots
+\end{description}
+
+\subsubsection{联合测试}
+结合视频播放的测试：
+\begin{enumerate}
+  \item FTP 单线程下载（33-34 MB/s），AV 同步，不丢帧。
+  \item FTP 4 线程下载（4 $\times$ 4-5 MB/s），明显丢帧。
+  \item FTP 8 线程下载（8 $\times$ 1-2 MB/s），丢帧严重。
+\end{enumerate}
+
+\section{NAS DNC  Benchmark} \label{}
+
+\subsection{硬件环境}
+\begin{description}
+  \item [体系结构]：1 $\times$ SPARC, 型号未知
+  \item [硬盘]：4 $\times$ SAMSUNG SP0812C 80G
+  \item [网络接口]：1 $\times$ GB Ethernet
+\end{description}
+
+四块硬盘中只有三块能组成 RAID5，另一块可以组成 RAID0。
+
+\subsection{软件环境}
+\begin{description}
+  \item [内核]：linux-2.4.20
+  \item [应用软件]：all unknown
+\end{description}
+
+\subsection{RAID5 测试过程和结果}
+
+\subsubsection{单项测试}
+\begin{description}
+  \item [FTP]: 10-11 MB/s ／60 KB/s
+  \item [NFS]: 10-11 MB/s ／4-5 MB/s
+  \item [SMB/CIFS]: 10-11 MB/s ／\ldots
+\end{description}
+
+\subsubsection{联合测试}
+结合视频播放的测试：
+\begin{enumerate}
+  \item FTP 8 线程下载（8 $\times$ 2-3 MB/s），AV 同步，不丢帧。
+  \item FTP 10 线程上传（10 $\times$ 60-70 KB/s），AV 同步，不丢帧。
+  \item 只要启动一个进程进行 NFS 上传就会出现间歇性丢帧。
+\end{enumerate}
+
+\subsection{RAID0 测试过程和结果}
+除了数据流速慢一倍之外基本结果同上。
+
+\subsubsection{关于 NAS 服务器设置的推测}
+NAS 服务器是一个很不友好、很不 OPEN 的 BOX，关于它的细节我们几乎一无所知。甚至
+它的体系结构和操作系统都是我旁击侧敲推测出来的。经过上述的测试我们可以继续推测
+它关于 FTP 服务的设置：对上传下载均限制了最大进程／线程数、最大数据流速和每
+进程／线程数据流速。
+
+\section{总结}
+\ldots
+
+\newpage
+\thebibliography{99}
+\makeatletter \renewcommand\@biblabel[1]{#1} \makeatother
+%\cite[append-info]{keyword}
+%\begin{thebibliography}{label-style}
+%\bibitem[label]{keyword}text-item
+%\bibitem[\HandRight]{mp3ext}
+%    ``{\it MP3 Extensions}'', Alex Beregszaszi, November 28, 2003.
+%   (\href{http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}
+%	 {http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}) \\
+%    {\sl provide the informal explaination of MP3 Xing VBR header,
+%	 LAME header, etc.}
+
+%\end{thebibliography}
+\nocite{*}
+%\bibliography{biblio}	% 参考资料
+%\bibliographystyle{plain}	% unsrt, alpha, abbrev
+
+%\newpage
+%\begin{appendix}	% 附录
+%    \renewcommand{\thesection}{附录\Alph{section}}
+%    %\addcontentsline{toc}{section}{\thesection~~}
+%    \appendix \section{BF533 vs. BF561}
+%\end{appendix}
+
+%\printidx
+\end{CJK*} \end{document}
+
+ %%%%%%%%%%%%%%%%%%%% End Of File: hhbf-devlog.tex %%%%%%%%%%%%%%%%%%%%

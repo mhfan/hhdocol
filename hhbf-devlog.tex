@@ -1,0 +1,805 @@
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % $ID: hhbf-devlog.tex Tue, 07 Sep 2004 23:30:19 +0800  mhfan $ %
+ %                                                              %
+ % Description:                                                 %
+ %                                                              %
+ % Maintainer:  范美辉(Meihui Fan)  <mhfan@ustc.edu>            %
+ %                                                              %
+ % CopyRight (c)  2004  HHTech                                  %
+ %   www.hhcn.com, www.hhcn.org                                 %
+ %   All rights reserved.                                       %
+ %                                                              %
+ % This file is free software;                                  %
+ %   you are free to modify and/or redistribute it  	        %
+ %   under the terms of the GNU General Public Licence (GPL).   %
+ %                                                              %
+ % Last modified: Tue, 18 Jan 2005 14:09:31 +0800      by mhfan #
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listfiles % (should list the files loaded and it's versions).
+
+\documentclass[a4paper]{scrartcl}  % letter, article, scrartcl, report, book
+			% 封面和扉页 % coverpage & titlepage
+			% default is 10pt, letterpaper; letter
+
+\usepackage{CJK,ifthen,inputenc,fontenc}%,ipalmacs
+\usepackage{latexsym,amssymb,amsfonts,textcomp,pxfonts,txfonts,pifont,bbding}
+\usepackage{marvosym,stmaryrd,ifsym,tipa,ulsy,dingbat,ipa,wasysym,manfnt} %
+\usepackage{longtable,multirow,hhline,dcolumn,tabularx,array}
+\usepackage{makeidx,verbatim,fancybox}
+
+\usepackage{fancyhdr}	% fancy header & footer, box
+\newcommand{\makeheadrule}{         % 定义页眉横线
+  \rule[.7\baselineskip]{\headwidth}{1.2pt}\vskip-0.97\baselineskip
+  \rule[.6\baselineskip]{\headwidth}{0.4pt}}
+%  \makebox[-3pt][l]{\rule[.7\baselineskip]{\headwidth}{0.4pt}}
+%  \rule[0.85\baselineskip]{\headwidth}{1.5pt}\vskip-.8\baselineskip}
+  \makeatletter
+  \renewcommand{\headrule}{
+  	{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi}\makeheadrule}
+  \makeatother
+
+\usepackage{graphicx,subfigure,wrapfig}	% for graph
+\graphicspath {{./}{figs/}} % set graphics path
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.jpg,.jpeg,.pdf,.gif,.png}
+%\DeclareGraphicsRule{.jpg}{eps}{}{`convert #1 eps:-}
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+\usepackage[a4paper,pdftex]{geometry}
+%\geometry{top=1.7cm,bottom=2cm,left=2.5cm,right=2.1cm}
+%\geometry{body={15.6cm, 20cm}, centering, dvipdfm}
+
+\usepackage[CJKbookmarks,dvipdf,bookmarks=true]{hyperref}
+% setup hyperref for PDF nevigation:
+  \hypersetup{colorlinks, linkcolor=blue, citecolor=blue, urlcolor=red,%
+	plainpages=true, bookmarksopen=false,%
+	pdfhighlight=/P, %/I(inverse) /N(no effect) /O(outline) /P(inset)
+	pdfauthor={Meihui Fan <mhfan@ustc.edu>},%
+	pdftitle={A LaTeX example collection},%
+	pdfsubject={LaTeX, TeX},%
+	pdfkeywords={LaTeX, TeX, Typesetting},%
+	pdfstartview=FitH, %FitBH, FitB
+	pdfview=FitH,
+	pdfpagemode=UseOutlines, %None, FullScreen, UseThumbs
+}
+
+\usepackage{listings} %[mathscope]
+  \lstloadlanguages{C++, bash, tcl, VHDL, Haskell, Lisp, TeX, Oz, Perl, make}
+  %\lstinline!char foo='c';!	% ! can be #, %, $, etc.
+  \lstset{language=C, tabsize=8, keepspaces=true,
+	columns=fixed, %flexiblecolumns=true,
+	numbers=left, stepnumber=1, numberstyle=\tiny,
+	basicstyle=\small\ttfamily, showspaces=false,
+	%identifierstyle=\color{blue},
+	stringstyle=\color{magenta},
+	keywordstyle=\color{green}\textbf,
+	commentstyle=\color{cyan}\bfseries\itshape,
+	%classoffset=2,
+	%morekeywords={typedef,struct,enum,int,long,unsigned},
+	%keywordstyle=[2]\color{green}\bfseries,
+	%breaklines=true, breakautoindent=true, breakindent=4em,
+	escapeinside={/*@}{@*/}
+}
+
+%\newcommand{}		% newcommand definition:
+%\renewcommand{}	% redefine command:
+%\renewcommand{\headrule}{}
+\renewcommand\labelitemi{\small\EightFlowerPetal}
+\renewcommand\labelitemii{\small\SixFlowerAltPetal}
+\renewcommand\labelitemiii{\small\FiveStarConvex}
+\setlength{\parskip}{4pt plus1pt minus1pt}
+\newcommand{\ucl}{$\muup$Clinux~}
+
+% Don't report over-full v/h-boxes if over-edge is small.
+\vfuzz 2pt \hfuzz 2pt
+\setlength{\parindent}{0em} %\parskip 3mm
+% indent 2 Chinese characters befor each paragraph.
+\setlength{\parindent}{2em} %\parskip 3mm
+\makeatletter		    % indent the first paragraph. [indentfirst]
+    \let\@afterindentfalse\@afterindenttrue
+    \@afterindenttrue
+\makeatother
+
+\begin{document} \begin{CJK*}{GBK}{song}
+
+\pagestyle{fancy}
+%\lhead{} \chead{} \rhead{}
+\lfoot{HH Tech China} %\rfoot{\today} \cfoot{}	% 第\thepage页（共\lastpage页）
+\CJKcaption{GB}
+
+\title{\Huge HHBF533/HHBF561 \\ 软件移植开发手册\footnote{本文档大部分为 BF533 
+和 BF561 通用。事实上，它们用的是同一个分发包，只是配置选项的不同。}
+\vspace{1cm}} 
+% 标题
+\author{Version 0.1 \vspace{1cm} \\
+Meihui Fan \\ {\CJKfamily{kai} 范~美~辉} \\	% 作者
+$<$\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}$>$ \\
+%$<$\href{mailto:hhbf-support@hhcn.com}{hhbf-support@hhcn.com}$>$ \\
+% {{{
+%\texttt{<}\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}\texttt{>} \\
+%\texttt{\#}, \textless, \textgreater, \textlangle, \textrangle
+					% E-mail: mhfan@163.com
+%中国科学技术大学，生命科学学院 \\	% organization
+%安徽省合肥市四号信箱4号楼404室，230027} % address
+%\textit{Laboratory of Structural Biology, School of Life Science, USTC} \\
+%\textit{Room 4-404, P.O.Box 4, Hefei, Anhui, 230027 P. R. China} \\
+% }}}
+\vspace{2cm} \\ Copyleft \textcopyleft{} \number\year{}~ HHTech. Co., Ltd.
+\footnote{\href{http://www.hhcn.com}{http://www.hhcn.com}} \\
+All rights reserved. \\ \\ {\CJKfamily{li} 华恒科技　版权所有} \vspace{1cm}
+}
+%\date{}		% 日期
+\maketitle \titlepage	% generate the title, 标题页
+
+\iffalse
+\thanks{\bf\large ~ ~ ~Thanks}		% 致谢
+
+\begin{abstract}	% 摘要
+  \vspace{1cm} {\it Keywords: .}	% 关键字
+\end{abstract}
+\fi
+
+% {{{
+\newpage
+%\setcounter{tocdepth}{3}
+\tableofcontents	% 目录页
+\listoffigures
+\listoftables
+
+\newpage
+%\thispagestyle{fancy}
+% }}}
+
+\renewcommand\thefootnote{\tiny\textcircled{\arabic{footnote}}}
+%\renewcommand\thefootnote{\tiny\makebox[0pt][l]{\circle}{\arabic{footnote}}}
+%\renewcommand\thefootnote{\scriptsize\ding{191 + \arabic{footnote}}}
+
+\section{前言} \label{}
+ADI\footnote{Analog Device Inc，公司主页：\href{http://www.analog.com}
+{http://www.analog.com}} 公司雇佣了 LG Soft India 公司做其 Blackfin 系列 DSP 
+处理器（主要是BF533）的 \ucl 移植（\ucl for Blackfin 的主页：
+\href{http://blackfin.uclinux.org}{http://blackfin.uclinux.org}），
+这包括 \\ GNU/Toolchain、U-Boot 和 \ucl 三个开源
+项目的移植，并且所有代码都继承遵循 GNU GPL 许可证协议。我们的 HHBF533/HHBF561 
+开发板的 \ucl 系统移植和应用开发以此为‘草稿’来进行。
+
+\subsection{移植开发的指导原则}
+鉴于当前官方的 \ucl Blackfin 移植还很不稳定和成熟，\ucl 包括 GNU/Toolchain 都
+存在诸多问题和 BUG，我们自己的移植开发（包括 \ucl 和 GNU/Toolchain）均有必要采
+用与官方 CVS 代码同步的方式，以保证及时更新最新的移植进展和 BUG 修正。
+
+所以，为了保证代码的清晰和便于与官方 CVS 同步，移植的时候在编码和文件布局上
+采取以下策略：
+\begin{enumerate}
+  \item 理解代码的本质，寻找最基本的不同，做最少和最通用的修改；并且保证所做的
+    修改不负面影响原始的使用意向。
+  \item 对于在官方文件中做的修改一律做上自己的标记（\texttt{`mhfan'}）。
+  \item 对于相对独立的功能模块和驱动程序的开发一律建立以\texttt{`hhbf'}
+    开头的文件夹放置代码文件，不破坏原来的目录文件组织。
+  \item 对于相对独立的功能模块和驱动程序的开发尽量地反映在配置菜单选项中。
+  \item 充分利用预编译器的功能；常量尽量采用宏定义。
+  \item 每日与官方的 \ucl CVS 内核代码比较（\texttt{diff}）并手动更新；对于其
+    它部分：\ucl 应用程序代码、U-Boot、以及 GNU/Toolchain 代码则隔一段时间（如
+    一周）更新一次。
+  \item 镜像并定时更新官方 \ucl CVS Repository 以便于将来多人协作开发。
+\end{enumerate}
+
+\section{U-Boot 移植} \label{u-boot-port}
+在 U-Boot for Blackfin 的移植中， CPU 的初始化工作主要包括：
+\begin{itemize}
+  \item 各种时钟频率的设置
+  \item 异步内存接口（ABI\footnote{用于 FLASH、内存映射 IO 等}）的初始化设置
+  \item SDRAM 控制器（SDC）的初始化设置
+  \item 集成串口的初始化设置
+  \item 中断向量表的初始化设置
+\end{itemize}
+此外，为了让 U-Boot 支持以太网下载和 FLASH 烧写，还必须添加以太网芯片和
+FLASH 芯片的驱动程序。
+
+在官方的 U-Boot 移植中，实现上述 CPU 初始化的代码大部分借用了 Linux 内核移植的
+成果；板级配置文件（\texttt{`u-boot/include/configs/*.h'}）充当了内核配置文件的
+作用（尤其在最新的 U-Boot 代码中，这一点更为明显）。所以在我们的移植中，即使是
+给 BF561 的移植也可以不需要修改太多的代码。
+
+由于设置和修改串口波特率的代码是通过执行期动态计算得出相关寄存器（UART\_DL）
+所需要的值\footnote{可以通过读取 CPU 时钟频率相关寄存器的值换算出系统时钟（
+SCLK），再通过公式：\\$BAUD RATE = SCLK/(16 \times UART\_DL)$ 计算出来。}，也就
+是说只要设置好了 CPU 各种时钟频率，总能将串口设置在特定的波特率工作；所以我们不
+需要修改串口初始化设置的代码。另外，由于 U-Boot 中基本没有使用外部中断，于是中断
+向量表就显得很机械也很简单，因而也就不需要修改了。
+
+对于 SDC 的初始化设置，也可以由一些‘先验知识’计算出来（通过宏定义由预编译器
+计算），只需要显式地设置内存大小（HHBF533--32M, HHBF561--64M）和列地址位宽
+（9bit）即可。
+
+剩下的问题就是 CPU 时钟频率相关寄存器的设置了。其中核心时钟倍频由
+\texttt{`PCC\_CTL'} 寄存器中的 14-9 位决定，而系统时钟分频倍率由
+\texttt{`PLL\_DIV'} 寄存器中的 3-0 位决定。当然，我们同样用宏定义抽象我们关心的
+概念（如外频、倍频、系统时钟等），让CPP 为我们计算确切的寄存器值。关于这些寄存
+器位的详细描述请参考 BF561 的 CPU 硬件参考手册\ref{bf561-hwr}。
+
+下表是典型的 CPU 寄存器初始化设置，供调试时参考：
+\begin{center}\ttfamily
+\begin{tabular}{||l||l|l|l||} \hline \hline
+  寄存器名& 系统复位值& HHBF533 的设置& HHBF561(CORE A) 的设置  \\\hline
+  EBIU\_AMBCTL0 & 0xffc2ffc2	& 0x7bb07bb0	& 0x7bb07bb0	\\ % ffc2 7bb0
+  EBIU\_AMBCTL1 & 0xffc2ffc2	& 0x99b37bb0	& 0x99b37bb0	\\ % 99b3 ffc2
+  EBIU\_AMGCTL  & 0x00f2	& 0x00f8	& 0x00f8	\\\hline
+  EBIU\_SDBCTL	& 0x00000000	& 0x00000013	& 0x00000015	\\
+  EBIU\_SDRRC	& 0x081a	& 0x074a	& 0x074a	\\
+  EBIU\_SDGCTL	& 0xe0088849	& 0x0091998d	& 0x0091998d	\\\hline
+  UART\_DLL	& 0x0000	& 0x0012	& 0x0012\footnote{这里没有打错
+		       ，这是 BF561 在仿真器下运行时的 BUG。}	\\\hline
+  PLL\_CTL	& 0x1400	& 0x1400	& 0x2800	\\\hline 
+\hline
+\end{tabular}
+\end{center}
+
+以太网（硬件采用 DM9000 芯片）驱动的原始代码来自 Davicom 官方发布的最新 V1.25 
+版给 linux-2.4.x 的驱动；移植给 U-Boot 主要有以下步骤：
+\begin{enumerate}
+  \item 初始化异步内存（以太网片选地址——0x2C000000——的内存映射）访问控制接
+    口，这在 CPU 初始化过程中已经考虑并设置好了，所以在以太网驱动中无需重复了。
+  \item U-Boot 中没有使用中断，也不需要以太网收发包的统计信息，所以注释掉相关
+    的代码，中断处理改成计时查询。
+  \item 定义与内核兼容的数据结构一些接口（如
+    \texttt{inb, inw, inl, outb, outw, outl}），
+    这样可以保持原来的大部分代码结构。
+  \item 还有一些细微的代码需要调整，可以根据编译情况来处理。
+  \item 定义U-Boot 中以太网驱动的调用接口：\texttt{eth\_init, eth\_send, 
+    eth\_rx, eth\_halt}。
+\end{enumerate}
+
+至于 FLASH 驱动， HHBF533 所用的 FLASH（AM29LV16008-90EC） 与 EZKIT533 的兼容，
+可以直接使用原来的代码。而在 HHBF561 上所用的 FLASH（TE28F128J3C150），其烧写访
+问的操作流程，比较简单，只需在原来的代码结构上换上芯片手册中给出的操作流程
+就行了，这里不详细罗列。另外一个需要设置的地方是 FLASH 的大小、块数、块大小等。
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+  \begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+现象描述 & 原因分析 & 解决方法\\\hline
+用仿真器跑没有反应，挂起 CPU 发现每次都停在同一条指令上（STI R2;） &
+软件设置了 PLL 相关寄存器后让 CPU IDLE 以等待 CPU 频率稳定，但是连着仿真器的时
+候 CPU 不能从 IDLE 状态正确返回。估计根本原因是 CPU 内部问题或者仿真器及 
+Visual DSP++ 有 BUG。（BF533 上没有这个问题） &
+幸运的是不带仿真器的时候，CPU 可以正确运行。 \\ \hline
+运行之后，minicom 中出现乱码 &
+这通常是波特率设置不匹配。由于波特率是动态计算的，并且计算公式是确定的，所以不
+需要修改代码，只需修改波特率计算相关的设置。 &
+波特率计算相关的设置包括：波特率值、晶振频率、倍频设置、系统时钟分频设置，这些
+都在板级配置文件里面。\\ \hline
+TFTP 下载不成功 & 跟中发现以太网的初始化程序都没有调用 &
+在以太网设备初始化函数里面加上相应的 DM9000 初始化函数 \\ \hline
+U-Boot 启动的时候显示没有检测到以太网芯片 &
+跟踪发现读到的 DM9000 标志寄存器值不对 &
+试探性的每次要读寄存器的时候连续读两次，解决了问题。\\\hline
+\end{tabular}
+\end{center}
+
+一般来说，如果足够的细心处理配置文件和一些头文件里面的内容，移植 U-Boot 并不需
+要做太多工作。另外，有一个建议就是把编译的警告打到最高，编译器通常总是能够帮我
+们找到代码中的问题。
+
+\subsection{参考资料}
+\begin{itemize}
+\renewcommand\labelitemi{\eye}
+  \item U-Boot 源码树中的 \texttt{`README' \& `ReleaseNotes'}。
+  \item U-Boot 的 BF533 移植的项目主页：
+	\href{http://blackfin.uclinux.org/projects/uboot533/}
+		{http://blackfin.uclinux.org/projects/uboot533/}；\\
+	CVS Repository: 
+	`:pserver:anonymous@cvs.blackfin.uclinux.org:/cvsroot/uboot533'。
+  \item U-Boot 原始的项目主页：
+	\href{http://u-boot.sourceforge.net}{http://u-boot.sourceforge.net}。
+  \item ``ADSP-BF561 Blackfin Processor Hardware Reference''.
+  \item ``Intel 28F128J3A, 28F640J3A, 28F320J3A''——Intel 系列 FLASH 芯片手册
+    。
+\end{itemize}
+
+\section{\ucl 移植} \label{}
+关于 CPU 初始化的主题在上一节“U-Boot 移植”\ref{u-boot-port} 中已经详细阐述过
+，此不赘述。
+
+这里说明一下 BF561 移植的一些要点。虽然 BF561 是对称双核的结构，但由于我们当前
+的移植都是把 BF561 当作单核来使用，它的每一个核都与 BF533 兼容，所以我们采用以
+下策略：
+\begin{enumerate}
+  \item 在 BF561 系统内存映射寄存器（System MMRs）的宏定义头文件（\\
+    \texttt{`include/asm/bfinnommu/board/\{bf561.h,bf561\_irq.h,
+    \\ defBF561.h,cdefBF561.h\}'}）中定义与 BF533 兼容的宏，即所有与
+    BF533 兼容的寄存器都{\color{red}再定义}一个与 BF533 的定义相同的宏名。
+  \item 只一个头文件\texttt{`include/asm/bfinnommu/blackfin.h'} 中
+    封装 CPU 的信息，即在该文件中判断从内核配置菜单得到的 CPU 信息，据此包含相
+    应的头文件。
+  \item 在系统其它模块和驱动程序中所有需要 CPU 相关信息的文件都只包含 
+    \texttt{`blackfin.h'}，这样官方的 BF533 \ucl 内核移植中的许多驱动可以基本
+    不需要做什么修改就可以使用。
+\end{enumerate}
+
+另外，从 BF533 到 BF561 的移植中一个非常关键的地方在于 BF561 每一个核的中断资源
+和中断相关寄存器（\texttt{SIC\_IWR, SIC\_IAR, SIC\_ISR, SIC\_IMASK}）都是 BF533 
+的两倍，所以要对 BF533 的中断处理相关函数和接口做一些技巧性的改动。所有的这些
+改动都在\texttt{`arch/bfinnommu/mach-bf533/ints-priority.c'} 文件
+中。
+
+关于中断还有一个要注意的地方是串口驱动的中断处理，官方驱动中是用明文数值来判断
+是否串口中断，而 BF533 与 BF561 中串口中断位并不一致，所以需要修改。我们已经定
+义了一个 \texttt{`IRQ\_UART\_MASK'} 的宏来做判断。
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+\end{tabular}
+\end{center}
+分散于后面各章节。
+
+\subsection{参考资料}
+\begin{itemize}
+\renewcommand\labelitemi{\eye}
+  \item \ucl 源码树中的 \texttt{`README' \& `ReleaseNotes'} 和
+  \texttt{`Documentation/ \\
+	\{Adding-Platforms-HOWTO,Adding-User-Apps-HOWTO,FAQ\}'}。
+  \item Linux 源码树中的内核文档。
+  \item GNU/Toolchain 的 Blackfin 移植的项目主页：
+	\href{http://blackfin.uclinux.org/projects/gcc3/}
+		{http://blackfin.uclinux.org/projects/gcc3/}；\\
+	CVS Repository: 
+	`:pserver:anonymous@cvs.blackfin.uclinux.org:/cvsroot/gcc3'。
+  \item \ucl 的 BF533 移植的项目主页：
+	\href{http://blackfin.uclinux.org/projects/uclinux533/}
+		{http://blackfin.uclinux.org/projects/uclinux533/}；\\
+	CVS Repository:
+	`:pserver:anonymous@cvs.blackfin.uclinux.org:/cvsroot/uclinux533'。
+  \item ``ADSP-BF561 Blackfin Processor Hardware Reference''.
+\end{itemize}
+
+\section{以太网驱动和应用} \label{}
+以下是移植 DM9000X 以太网驱动所需要做的工作：
+\begin{enumerate}
+  \item 初始化异步内存（以太网片选地址——0x2C000000 on BF561, 0x20300000 on 
+    BF533——的内存映射）访问控制接口，这在 CPU 初始化过程中已经考虑并设置好了，
+    所以在以太网驱动中无需重复了。
+  \item 由于片上 SROM 中并未写入以太网地址，所以在以太网检测／初始化例程中为 
+    DM9000 芯片分配合法物理地址（\texttt{`random\_ether\_addr'}）。
+  \item 使用 \texttt{`PF10'} 做以太网中断线，初始化该引脚（使之工作在上升沿边沿
+    触发输入模式），并在中断处理例程中清该中断引线。
+  \item 将中断处理例程中的自旋锁函数换成\texttt{`spin\_lock\_irq'}（原来为
+    \texttt{`spin\_lock'}）。
+  \item 将中断处理中的底半部处理策略（由\texttt{`tasklet'}实现）改成即时处理。
+  \item 为了少修改原始代码，我们用内核模块初始化宏定义 \texttt{`module\_init'} 
+    来加载 DM9000X 驱动。
+  \item 为内存映射的 IO 访问加上 DCACHE 的管理（有必要给 
+    \texttt{`asm-bfinnommu/io.h'}打个补丁，以杜绝其它 IO 驱动的隐患）。
+\end{enumerate}
+
+另外，由于原始代码是为 linux-2.4.x 的内核写的，而 linux-2.6.x 在以太网驱动的接
+口上有一些变动（如没有了\texttt{`init\_etherdev'}函数，代之以
+\texttt{`alloc\_etherdev'}），所以在一些细节上还要做一些修改。
+
+以上工作可以让以太网正常工作了，但是 IPV6 的支持还有一个问题。Linux 内核中关于 
+IPV6 地址校验（\texttt{`csum\_ipv6\_magic'}）有两套实现：一是体系结构相关的汇
+编实现，在 \texttt{`include/asm/checksum.h'} 文件中，另一是体系结构无关的
+C 语言实现，在 \texttt{`include/net/ipv6\_checksum.h'} 文件中（它们靠宏定义：
+\texttt{`\_HAVE\_ARCH\_IPV6\_CSUM}' 来切换）。在官方的 BF533 移植中体系相关的
+实现是以 m68k 的实现为模板，估计没有经过调试和验证，所以导致 IPV6 的通信过程中
+地址验证总是失败。但是 C 语言的实现可以很好地工作。
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+  \begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+某一个内核版本打开 ICACHE 后以太网没有反应 & 跟踪没有发现任何问题板子收到真确的
+包，也正确地调用了发包函数，但问题肯定与 CACHE 有关 & 查阅内核文档发现有一些与 
+CACHE 有关的函数，试探性地使用 CACHE LOCK 保护以太网发包函数，于是以太网通了。
+\\ \hline
+以太网不能正常收发， minicom 中显示包长度不匹配 &
+跟踪发现读包长度的时候错了位 &
+在读包长度之前再发一次基地址，于是解决了问题 \\ \hline
+测试 IPV6 不通，minicom 中显示 ``4 printk messages suppressed'' &
+自底而上跟中以太网包的处理发现最终原因是 IPV6 的地址验证失败，校对 PC 发的以太
+网包和板子收的以太网包发现它们是一致的，看来是校验函数有问题。 &
+注释掉体系结构相关的校验函数实现，改用IPV6 协议中的 C 语言实现，于是解决了问题
+。 \\ \hline
+打开 DCACHE 和 ICACHE 系统运行一段时间（同时做 ls -R 和 flood ping）后触发硬件
+中断（IRQ 0x05）并且显示 ``System MMRs Error'' &
+这是指令错误，原因可能是 CACHE 不一致或者硬件不稳定导致 &
+给以太网的  IO 访问函数加上 CACHE CLEAN 和 CACHE FLUSH 暂时解决了问题。 
+\\\hline
+\end{tabular}
+\end{center}
+
+\section{视频驱动} \label{}
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{video-ppi-dma}
+  \caption{视频处理流程} \label{fig:video-ppi-dma}
+\end{figure}
+
+我们的视频处理流程见图\ref{fig:video-ppi-dma}。在软件上，一般来说，视频驱动包
+括四层：
+\begin{enumerate}
+  \item I2C 驱动，用于与视频 ADC/DAC 芯片通讯。
+  \item 视频 ADC/DAC 芯片本身的驱动。
+  \item PPI 和 DMA 的驱动，用于视频数据流的输入输出。
+  \item 为应用层提供通用的规范接口。
+\end{enumerate}
+
+首先是 I2C 驱动，我们利用官方 Linux 内核中官方I2C 通讯协议的实现结构，只在最底
+层实现板级硬件相关的 I2C 位操作例程。（关于 Linux 内核中 I2C 驱动的结构请参考
+内核目录树中的\texttt{`Documentation/i2c/*'}。 ）由于 Blackfin 系列处理器中没
+有 I2C 模块，所以我们的板子上使用两个 GPIO（\texttt{`PF0 \& PF1'}） 来模拟 I2C 
+总线。
+
+我们的视频芯片用的是 ADV7171 和 SAA7113H，前者的驱动在内核源码中有其兼容芯片 
+ADV7170 的实现，而后者的驱动在开源项目RivaTV 中也有实现，由于我们使用了内核的 
+I2C 驱动，所以这一层可以直接挪用这两个驱动的实现。这两个驱动实现都定义了一套寄
+存器初始化表，只有修改这些寄存器值芯片就能正常工作了。
+
+PPI 和 DMA 驱动，我们都只是用几个简单的函数来实现，而没有做成一个规范的驱动。
+（最新的 BF533 内核移植中已经包含了统一的 DMA 驱动，我们虽然也把它移植到 BF561
+上，但到现在为止还没有充分利用它。）其中视频输入使用 PPI0，视频输出使用 PPI1。
+
+最后是应用层接口，主要有两种框架：Frame Buffer 框架和 Video 4 Linux V2 框架。
+
+\subsection{Frame Buffer 驱动} \label{}
+Frame Buffer 驱动本身很简单，因为内核代码中已经有一个框架代码了，只需将那些数
+据结构、函数接口填充一下就可以了。关键的部分在于视频数据的转换：Frame Buffer 
+的应用程序使用的是 RGB 裸位图数据，而它的驱动使用的是 ITU-656 数字电视的视频格
+式。转换程序借鉴了 RivaTV 的优化实现。
+
+\subsection{Video 4 Linux V2 驱动} \label{}
+Implemention in progress.
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+\end{tabular}
+\end{center}
+驱动未完善，有待总结。
+
+\section{视频编解码联调} \label{}
+\subsection{网络传输的应用程序}
+\subsection{设计思想}
+为了调试和演示视频编解码的方便，我们需要实现两套网络传输的应用程序：其一把开发
+板采集编码后的码流传送到PC 机上存成文件，其二为开发板提供视频解码的码流。在这
+里，出于简单实现的考虑，我们不准备采用太复杂的协议，而只用socket /TCP 连接作为
+网络通信的方式。我们假设网络状况足够好，以至于能够满足实时视频码流传送的要求。
+
+\subsection{程序流程}
+关于 socket 通信的细节请参考\ref{unp}，另外网上也有很多示例代码，此不赘述。
+\subsubsection{视频编码传输}
+\begin{center}
+\begin{tabular}{l||l} \ttfamily
+  {　　　　[vsvr.c]} & {　　　　[hvclt.c]} \\ \hline
+  初始化码流缓冲区& ~ \\
+  监听 socket 端口等待连接&  ~\\
+  协商连接 & 建立 socket/TCP 连接 \\
+  启动 CORE B（参考 \ref{bf561-secldr}） & ~ \\
+  查询码流缓冲区并发送数据 & 接收数据存成文件 \\
+  传送完毕，挂起 CORE B & 关闭文件和 socket 连接 \\
+\end{tabular}
+\end{center}
+
+\subsubsection{视频解码传输}
+\begin{center}
+\begin{tabular}{l||l} \ttfamily
+  {　　　　[vclt.c]} & {　　　　[hvsvr.c]} \\ \hline
+  初始化码流缓冲区& 监听 socket 端口等待连接 \\
+  建立 socket/TCP 连接 & 协商连接\\
+  启动 CORE B（参考 \ref{bf561-secldr}） & 读取码流文件并发送数据 \\
+  接收数据并提交给CORE B & ~ \\
+  接收完毕，挂起 CORE B & 关闭文件和 socket 连接 \\
+\end{tabular}
+\end{center}
+
+\subsubsection{码流缓冲区的管理}
+为了避免与 CORE B 竞争访问同一个缓冲区，码流缓冲区采用双缓冲区切换的管理策略：
+开发板上的 vsvr 和 vclt 进程都是在一开始就分配两个单元的缓冲区，并串成循环缓冲
+区；每次要发送数据之前依次查询下一个缓冲区直至它存满数据（flag 为‘1’）。
+
+以下是缓冲区的结构定义：
+\begin{lstlisting}
+typedef struct BufDesc {
+        struct BufDesc* next;
+        unsigned char*  base;
+        int             flag;
+}   Buf_Desc;
+\end{lstlisting}
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+\end{tabular}
+\end{center}
+见吴卅建的调试文档。
+
+\subsection{参考资料}
+\begin{itemize}
+\renewcommand\labelitemi{\eye}
+  \item ``ADSP-BF561 Blackfin Processor Hardware Reference''.
+  \item Linux 源码树中相应模块／驱动（I2C, FB, V4L）的内核文档。
+  \item Frame Buffer FAQ:
+    \href{http://www.sunhelp.org/faq/FrameBuffer.html}
+	{http://www.sunhelp.org/faq/FrameBuffer.html}
+  \item RivaTV Project: 
+    \href{http://rivatv.sourceforge.net/}{http://rivatv.sourceforge.net/}
+  \item Video 4 Linux 2: 
+    \href{http://linux.bytesex.org/v4l2/}{http://linux.bytesex.org/v4l2/}
+  \item V4L2 Resource:
+    \href{http://www.exploits.org/v4l/}{http://www.exploits.org/v4l/}
+\end{itemize}
+
+\section{音频驱动} \label{}
+与视频驱动类似，音频驱动也分为几个层面：
+\begin{enumerate}
+  \item SPI 驱动，用于实现设备通讯。
+  \item 音频 AD/DA 芯片（ADI1836A）的驱动。
+  \item SPORT 和 DMA 驱动实现音频输入输出数据的传输。
+\end{enumerate}
+
+音频驱动采用 Advanced Linux Sound Architecture(ALSA)\footnote{ALSA 
+是 linux-2.6.x 的标准音频驱动框架。} 的框架。由于得到了一份非官方的 
+EZKIT-BF533 开发板的音频驱动，而且跟原作者反馈建议的结果使得这份驱动更具有可移
+植性，所以只做了很少的移植工作（包括 DMA、IRQ，以及一些 System MMRs 地址），于
+是对驱动的实现细节也没有做太多的学习。
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+ 调试音频播放的时候发现一调用 ioctl 的时候就死机 &
+ 跟踪发现音频驱动中32 位乘法的实现总是出错，主要是一个64位的函数参数传递有误，
+导致其后的某一个参数为零，而这个参数是做为除数来用的。 &
+这个问题有点莫名奇妙，估计是编译器有 BUG，换了一个新的编译器就解决了问题。 
+\\ \hline
+\end{tabular}
+\end{center}
+
+\section{CACHE 问题} \label{}
+BF533/BF561 的 CACHE 配置取决于 32 对 CPLB\footnote{}
+寄存器，其中DCACHE 和 ICACHE 各16对。每一对寄存器分别指定了 CACHE 映射的起始
+地址和缓存策略，后者包括映射的存储空间大小、访问权限、缓存方式、是否锁定，以及
+是否缓存和是否有效等。（详细的细节请参考 CPU 硬件参考手册“Memory”一章。）
+
+如果要使用 CACHE 必须保证 CPLB 寄存器的配置覆盖了所访问的所有内存区域，即使在
+某些区域并不需要缓存（通过置相应CPLB 配置寄存器中相应位来指定是否缓存），也必
+须有相应的 CPLB 配置。
+
+以上所说是硬件级的静态 CACHE 管理。由于 CPLB 寄存器有限，很可能不能覆盖所有的
+内存区域，所有需要加入 OS 级的软件动态 CACHE 管理。在这种管理策略中，同样有两
+张相应于 CPLB 配置寄存器对的页面描述表（Page Description Table, PDT），里面可
+以填上任意项，这样当硬件的 CACHE 管理找不到所访问的内存区域就触发一个异常，然
+后在异常处理中从 PDT 中找到相应的表项来替换某个 CPLB 配置寄存器对。
+
+在访问存储空间的时候，如果所访问的存储空间是可缓存的，并且有潜在的不经过当前 
+CPU 的存储内容访问，则当前 CPU 在读取该存储空间内容前必须执行 CACHE CLEAN，
+在写该存储空间内容后必须执行 CACHE FLUSH。这主要有三种情况：
+\begin{enumerate}
+  \item 另一个核访问了该存储空间
+  \item 某一个 DMA 通道访问了该存储空间
+  \item 该存储空间是某个外设的 IO 内存映射
+\end{enumerate}
+
+对于 BF561 的 CACHE 配置，我们采取以下原则：
+\begin{itemize}
+  \item L1 SRAM、L2 SRAM 配置成不缓存、不可替换；
+  \item SDRAM 缓存32M，其中内核所有内存区域配置成不可替换；
+  \item 在页面表述表中缓存所有 SDRAM 空间，FLASH 空间和网络芯片的地址空间。
+\end{itemize}
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+ 内核启动的时候显示 ``kernel panic: No CPLB Address match'' &
+ 通常是用了 CACHE 而没有覆盖所访问的存储空间　&
+ 添加相应的 CPLB 项和　PDT 表项即可 \\\hline
+ 系统运行不稳定，经常进入硬件错误中断 (IRQ 0x05) 并显示：``External Memory 
+Addressing Error'' &
+ 可能是EBIU 设置有问题或者编译器指令生成有误或者硬件不稳定，不知道确切原因 &
+ 最新的内核＋最新的编译器已没有出现这一问题。\\\hline
+\end{tabular}
+\end{center}
+
+\section{其它的一些驱动和模块} \label{}
+\subsection{二级引导器} \label{bf561-secldr}
+实现这个驱动是为了方便在应用程序中加载 CORE B 代码，并唤醒 CORE B 执行代码。因
+为Blackfin 处理器具有不完全的 MMU 和指令操作模式的限制。考虑到接口简单易实现的因
+素，我们使用 proc 文件系统作为驱动的应用层接口。
+
+这个驱动包括两个部分：二级引导加载器（用于加载 CORE B 的运行代码）和 
+\texttt{SICA\_SYSCR} 寄存器的操作（用于唤醒或挂起 CORE B）。
+
+二级引导加载器挪用自 ADI Visual DSP++ 中给的示例，只作了小的修改；驱动的实现本
+身很简单这里不详述。
+
+\subsection{片内 SRAM 的利用} \label{}
+这个驱动的实现是为了演示如何利用 BF533/BF561 中闲置的片内 SRAM。驱动通过在 C 
+代码中添加编译器指示（compiler directive, GCC 里通过
+\texttt{`\_\_attribute\_\_'}来实现）并结合链接脚本来指示编译器把代码／数据放到
+特定的内存位置。另外，在驱动中还实现了一个 proc 文件系统接口，用以演示调用片内
+ SRAM 中代码的执行和数据的操作。
+
+以下是测试代码：
+\lstinputlisting[%inputencoding=cp936, extendedchars=true,
+	linerange={19-59},
+	title=On-chip SRAM Utilization]{sram_test.c} \label{common-data}
+
+需要说明的是，由于要利用片内 SRAM 就必须使用 ELF 格式的内核映像了（默认的内
+核映像是无格式的裸二进制映像）。
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+ 测试发现不能正常使用片内 SRAM ，系统死机 &
+ 用仿真器跟踪发现相应的代码没有正常加载到相应的位置 &
+ 修改 U-Boot 中的 memcopy 函数解决问题。 \\\hline
+
+测试 L2 SRAM 时发现系统总是跑飞，并导致死机 &
+反汇编发现 L2 中的函数调用地址有误，只有地址的 24 位值；估计是编译器做符号解析
+的时候只取绝对地址的 24 位，或者相对地址的 16 位导致 &
+仍未解决。 \\\hline
+\end{tabular}
+\end{center}
+
+\subsection{多线程／进程和 IPC 测试} \label{}
+虽然官方的发布手记中说仍未支持，但据我们的测试当前的 \ucl on Blackfin 中已能支
+持 POSIX thread, System V IPC 简单的测试代码，在内核中只对 System V IPC 的共享
+内存部分做了很少的修改。测试代码全部在 \texttt{`uClinux-dist/user/hhtech'} 目
+录下（其中大部分来自南京天朗电子的陶猛） 。
+
+测试很简单，无需记录。
+
+
+\section{系统性能} \label{}
+给 \ucl 移植了 lmbench（a system benchmarks project），
+已把它加到\texttt{`Customize Vendor/User Settings/Miscellaneous Applications'}
+菜单中。
+
+移植过程比较简单，主要是修改编译控制；另外，源代码中的一些文件路径也需要修改。
+
+表 \ref{system-perf} 是测试结果：
+
+\begin{table}[!htbp] \centering
+  \caption{系统性能——时延和带宽}\label{system-perf}
+\begin{tabular}{||l||l||} \hline \hline
+  测试项目 & HHBF561\footnote{Single CORE with DCACHE off on 594MHz} (us) 
+  \\\hline
+  系统调用 & 10.0518/15.2089/14.5280//\footnote{null/read/write/stat/open} 
+  \\\hline
+  进程创建 & 411.4172/456.6911/28709.3947\footnote{vfork/exec/shell} \\\hline
+  上下文切换 & - \\\hline
+  中断响应 & - \\\hline
+  网络延时 & //\footnote{tcp/udp/unix}\\\hline
+  信号安装／捕获 & 40.164/48.511\footnote{install/catch} \\\hline
+  \hline
+  网络带宽 & //\footnote{tcp/udp/unix}\\\hline
+  内存带宽 & ~\\\hline
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{调试记录}
+\begin{center}\ttfamily
+\begin{tabular}{|p{4cm}|p{6cm}|p{4cm}|} \hline
+ 现象描述  &  原因分析  &  解决方法 \\\hline
+测试进程创建的时候发现系统总是没有反应  &
+估计是测试代码中使用 fork 导致，检查代码之后发现果然如此 &
+用一个宏定义把 fork 替换成 vfork \\\hline
+测试上下文切换的时候发现系统没有反应 &
+跟踪代码发现，虽然fork 被替换成了 vfork，但是 vfork 之后没有创建新进程，而是仅
+仅调用父进程的一些函数；然而 vfork 并没有复制父进程的代码，因而导致了问题 &
+这个问题解决起来会有一些麻烦，暂时没有花时间去解决。\\\hline
+\end{tabular}
+\end{center}
+
+\section{当前存在／未决的问题} \label{}
+\begin{description}
+  \item[系统设置]：DCACHE \& ICACHE 都打开。
+  \item[测试过程]：NFS mount 了一个 PC 机根目录，同时做 ls -R 和 flood ping。
+  \item[测试结果]：系统正常的持续繁忙运行了40 多个小时（从周六上午到周一上午
+    9:30）。
+\end{description}
+
+\begin{itemize}
+\renewcommand\labelitemi{\small\dbend}
+  \item GNU/Toochain 存在 BUG，一些视频指令不能识别，
+    更严重的是错误地解释一些指令；这些 BUG 正在被逐步修正。
+  \item Frame Buffer 驱动有待于完善和简单 GUI 的测试。
+  \item 音频驱动直接播放的效果不是很好，速度慢、频率高；还没有找到原因。
+  \item L2 SRAM　不能正常使用，这是编译器的问题——符号解析有误。
+  \item V4L2 驱动的实现。
+\end{itemize}
+
+\newpage
+\thebibliography{99}
+\makeatletter \renewcommand\@biblabel[1]{#1} \makeatother
+%\cite[append-info]{keyword}
+%\begin{thebibliography}{label-style}
+%\bibitem[label]{keyword}text-item
+%\bibitem[\HandRight]{mp3ext}
+%    ``{\it MP3 Extensions}'', Alex Beregszaszi, November 28, 2003.
+%   (\href{http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}
+%	 {http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}) \\
+%    {\sl provide the informal explaination of MP3 Xing VBR header,
+%	 LAME header, etc.}
+\bibitem[\HandRight]{adi}
+  ``{\it Analog Device Inc.}'', 公司主页：\href{http://www.analog.com}
+  {http://www.analog.com}.
+
+\bibitem[\HandRight]{bf561-hwr} ``ADSP-BF561 Blackfin Processor Hardware 
+    Reference''.
+\bibitem[\HandRight]{apue}
+  ``{\it Advanced Programming in the UNIX Environment}'', W. Richard Stevens, 
+  1992, Addison Welsley Publishing Company.
+
+\bibitem[\HandRight]{unp}
+  ``{\it Unix Netword Protramming}'', Volum1 Networking APIs: Sockets and XTI
+  (Second  Edition, W.  Richard Stevens, 1998, Prentice Hall PTR.
+   
+\bibitem[\HandRight]{u-boot} U-Boot 原始的项目主页：
+	\href{http://u-boot.sourceforge.net}{http://u-boot.sourceforge.net}。
+
+\bibitem[\HandRight]{u-boot-533} U-Boot 的 BF533 移植的项目主页：
+  \href{http://blackfin.uclinux.org/projects/uboot533/}
+		{http://blackfin.uclinux.org/projects/uboot533/}；\\
+  CVS Repository: 
+	`:pserver:anonymous@cvs.blackfin.uclinux.org:/cvsroot/uboot533'。
+
+\bibitem[\HandRight]{toolchain} GNU/Toolchain 的 Blackfin 移植的项目主页：
+  \href{http://blackfin.uclinux.org/projects/gcc3/}
+		{http://blackfin.uclinux.org/projects/gcc3/}；\\
+  CVS Repository: `:pserver:anonymous@cvs.blackfin.uclinux.org:/cvsroot/gcc3'。
+
+\bibitem[\HandRight]{uclinux-533} \ucl 的 BF533 移植的项目主页：
+  \href{http://blackfin.uclinux.org/projects/uclinux533/}
+		{http://blackfin.uclinux.org/projects/uclinux533/}；\\
+  CVS Repository:
+	`:pserver:anonymous@cvs.blackfin.uclinux.org:/cvsroot/uclinux533'。
+
+%\end{thebibliography}
+\nocite{*}
+%\bibliography{biblio}	% 参考资料
+%\bibliographystyle{plain}	% unsrt, alpha, abbrev
+
+\newpage
+\begin{appendix}	% 附录
+    \renewcommand{\thesection}{附录\Alph{section}}
+    %\addcontentsline{toc}{section}{\thesection~~}
+    \appendix \section{BF533 vs. BF561}
+    BF561 是双 BF533 核心（$BF561 \lessapprox BF533 + BF533$）。下表比较两者的
+CPU 资源：
+\begin{table}[!htbp] \centering
+\begin{tabular}{||l||c|c||}
+  \hline\hline　 & BF533 & BF561 \\\hline\hline
+   L1 SSRAM & 4K	& 4K \\\hline
+   L1 ISRAM & 16K + 64K & 16K + 16K \\\hline
+   L1 DSRAM & 16K + 16K & 16K + 16K \\\hline
+   L2  SRAM & ---	& 128K \\\hline
+   DMA & 8 DMA + 4 MDMA &
+   \parbox{5.6cm}{三个独立通道（DMA1,DMA2,IMDMA）\\ 2 $\times$ (12 DMA 
+   + 4 MDMA) + 4 IMDMA}  \\\hline
+   IRQ & 7 + 24 + 1 + 2 & 7 + 59 + 1 + 2 + 2 \\\hline
+   SPI & 1 & 1 \\\hline
+   PPI & 1 & 2 \\\hline
+   UART & 1 & 1 \\\hline
+   SPORT & 2 & 2 \\\hline
+   PFs & 16 & 48 \\\hline
+   RTC & 1 & -- \\\hline
+   Timer & 3 & 12 \\\hline
+   Watch Dog & 1 & 1 \\\hline
+  \hline
+\end{tabular}
+  \caption{BF533 vs. BF561} \label{bf533_bf561}
+\end{table}
+
+\end{appendix}
+
+%\printidx
+\end{CJK*} \end{document}
+
+ %%%%%%%%%%%%%%%%%%%% End Of File: hhbf-devlog.tex %%%%%%%%%%%%%%%%%%%%

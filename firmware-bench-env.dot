@@ -1,0 +1,24 @@
+digraph FW_BENCH_ENV {
+
+    style=solid;
+    node [shape=box];
+    edge [dir=both];
+
+    subgraph cluster_SW {
+	VLa [label="VLAN"];
+	VLb [label="VLAN"];
+	label="SWITCH";
+	color=green;
+    }
+
+    FWL [label="FIREWALL", color=red];
+    PCa [label="PC a", color=blue];
+    PCb [label="PC b", color=blue];
+
+    VLa -> FWL;
+    VLb -> FWL;
+    VLa -> PCa;
+    VLb -> PCb;
+
+    label="\n              powered by GraphViz\n"
+}

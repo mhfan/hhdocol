@@ -1,0 +1,966 @@
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % $ID: hhbf-manual.tex Tue, 07 Sep 2004 23:30:19 +0800  mhfan $ %
+ %                                                              %
+ % Description:                                                 %
+ %                                                              %
+ % Maintainer:  范美辉(Meihui Fan)  <mhfan@ustc.edu>            %
+ %                                                              %
+ % CopyRight (c)  2004  HHTech                                  %
+ %   www.hhcn.com, www.hhcn.org                                 %
+ %   All rights reserved.                                       %
+ %                                                              %
+ % This file is free software;                                  %
+ %   you are free to modify and/or redistribute it  	        %
+ %   under the terms of the GNU General Public Licence (GPL).   %
+ %                                                              %
+ % Last modified: Mon, 31 Jan 2005 17:07:48 +0800      by mhfan #
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listfiles % (should list the files loaded and it's versions).
+
+\documentclass[a4paper]{scrartcl}  % letter, article, scrartcl, report, book
+			% 封面和扉页 % coverpage & titlepage
+			% default is 10pt, letterpaper; letter
+
+\usepackage{CJK,ifthen,inputenc,fontenc}%,ipalmacs
+\usepackage{latexsym,amssymb,amsfonts,textcomp,pxfonts,txfonts,pifont,bbding}
+\usepackage{marvosym,stmaryrd,ifsym,tipa,ulsy,dingbat,ipa,wasysym,manfnt} %
+\usepackage{longtable,multirow,hhline,dcolumn,tabularx,array}
+\usepackage{makeidx,verbatim,fancybox}
+
+\usepackage{fancyhdr}	% fancy header & footer, box
+\newcommand{\makeheadrule}{         % 定义页眉横线
+  \rule[.7\baselineskip]{\headwidth}{1.2pt}\vskip-0.97\baselineskip
+  \rule[.6\baselineskip]{\headwidth}{0.4pt}}
+%  \makebox[-3pt][l]{\rule[.7\baselineskip]{\headwidth}{0.4pt}}
+%  \rule[0.85\baselineskip]{\headwidth}{1.5pt}\vskip-.8\baselineskip}
+  \makeatletter
+  \renewcommand{\headrule}{
+  	{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi}\makeheadrule}
+  \makeatother
+
+\usepackage{graphicx,subfigure,wrapfig}	% for graph
+\graphicspath {{./}{figs/}} % set graphics path
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.jpg,.jpeg,.pdf,.gif,.png}
+%\DeclareGraphicsRule{.jpg}{eps}{}{`convert #1 eps:-}
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+\usepackage[a4paper,pdftex]{geometry}
+%\geometry{top=1.7cm,bottom=2cm,left=2.5cm,right=2.1cm}
+%\geometry{body={15.6cm, 20cm}, centering, dvipdfm}
+
+\usepackage[CJKbookmarks,dvipdf,bookmarks=true]{hyperref}
+% setup hyperref for PDF nevigation:
+  \hypersetup{colorlinks, linkcolor=blue, citecolor=blue, urlcolor=red,%
+	plainpages=true, bookmarksopen=false,%
+	pdfhighlight=/P, %/I(inverse) /N(no effect) /O(outline) /P(inset)
+	pdfauthor={Meihui Fan <mhfan@ustc.edu>},%
+	pdftitle={A LaTeX example collection},%
+	pdfsubject={LaTeX, TeX},%
+	pdfkeywords={LaTeX, TeX, Typesetting},%
+	pdfstartview=FitH, %FitBH, FitB
+	pdfview=FitH,
+	pdfpagemode=UseOutlines, %None, FullScreen, UseThumbs
+}
+
+\usepackage{listings} %[mathscope]
+  \lstloadlanguages{C++, bash, tcl, VHDL, Haskell, Lisp, TeX, Oz, Perl, make}
+  %\lstinline!char foo='c';!	% ! can be #, %, $, etc.
+  \lstset{language=C, tabsize=8, keepspaces=true,
+	columns=fixed, %flexiblecolumns=true,
+	numbers=left, stepnumber=1, numberstyle=\tiny,
+	basicstyle=\small\ttfamily, showspaces=false,
+	%identifierstyle=\color{blue},
+	stringstyle=\color{magenta},
+	keywordstyle=\color{green}\textbf,
+	commentstyle=\color{cyan}\bfseries\itshape,
+	%classoffset=2,
+	%morekeywords={typedef,struct,enum,int,long,unsigned},
+	%keywordstyle=[2]\color{green}\bfseries,
+	%breaklines=true, breakautoindent=true, breakindent=4em,
+	escapeinside={/*@}{@*/}
+}
+
+%\newcommand{}		% newcommand definition:
+%\renewcommand{}	% redefine command:
+%\renewcommand{\headrule}{}
+\renewcommand\labelitemi{\small\EightFlowerPetal}
+\renewcommand\labelitemii{\small\SixFlowerAltPetal}
+\renewcommand\labelitemiii{\small\FiveStarConvex}
+\setlength{\parskip}{4pt plus1pt minus1pt}
+
+% Don't report over-full v/h-boxes if over-edge is small.
+\vfuzz 2pt \hfuzz 2pt
+\setlength{\parindent}{0em} %\parskip 3mm
+\iffalse
+% indent 2 Chinese characters befor each paragraph.
+\setlength{\parindent}{2em} %\parskip 3mm
+\makeatletter		    % indent the first paragraph. [indentfirst]
+    \let\@afterindentfalse\@afterindenttrue
+    \@afterindenttrue
+\makeatother
+\fi
+
+\begin{document} \begin{CJK*}{GBK}{song}
+
+\pagestyle{fancy}
+%\lhead{} \chead{} \rhead{}
+\lfoot{HH Tech China} %\rfoot{\today} \cfoot{}	% 第\thepage页（共\lastpage页）
+\CJKcaption{GB}
+
+\title{\Huge HHBF533/HHBF561 \\ U-Boot \& $\muup$Clinux 用户手册\footnote{如无
+特别说明，本文档为 HHBF533/HHBF561 通用。} \vspace{1cm}} % 标题
+\author{Version 0.2 \vspace{1cm} \\
+Meihui Fan \\ {\CJKfamily{kai} 范~美~辉} \\	% 作者
+$<$\href{mailto:hhbf-support@hhcn.com}{hhbf-support@hhcn.com}$>$ \\
+% {{{
+%\texttt{<}\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}\texttt{>} \\
+%\texttt{\#}, \textless, \textgreater, \textlangle, \textrangle
+					% E-mail: mhfan@163.com
+%中国科学技术大学，生命科学学院 \\	% organization
+%安徽省合肥市四号信箱4号楼404室，230027} % address
+%\textit{Laboratory of Structural Biology, School of Life Science, USTC} \\
+%\textit{Room 4-404, P.O.Box 4, Hefei, Anhui, 230027 P. R. China} \\
+% }}}
+\vspace{2cm} \\ Copyleft \textcopyleft{} \number\year{}~ HHTech. Co., Ltd.
+\footnote{\href{http://www.hhcn.com}{http://www.hhcn.com}} \\
+All rights reserved. \\ \\ {\CJKfamily{li} 华恒科技　版权所有} \vspace{1cm}
+}
+%\date{}		% 日期
+\maketitle \titlepage	% generate the title, 标题页
+
+\iffalse
+\thanks{\bf\large ~ ~ ~Thanks}		% 致谢
+
+\begin{abstract}	% 摘要
+  \vspace{1cm} {\it Keywords: .}	% 关键字
+\end{abstract}
+\fi
+
+% {{{
+\newpage
+%\setcounter{tocdepth}{3}
+\tableofcontents	% 目录页
+\listoffigures
+\listoftables
+
+\newpage
+%\thispagestyle{fancy}
+% }}}
+
+\renewcommand\thefootnote{\tiny\textcircled{\arabic{footnote}}}
+%\renewcommand\thefootnote{\tiny\makebox[0pt][l]{\circle}{\arabic{footnote}}}
+%\renewcommand\thefootnote{\scriptsize\ding{191 + \arabic{footnote}}}
+
+\section{U-Boot 简介} \label{}
+``U-Boot'' 是一个通用启动加载器固件的项目，项目的所有源代码都遵循公共通用许可证
+(GPL)协议。
+
+U-Boot 是给嵌入式板片使用的启动加载器，最初是基于 PowerPC 和 ARM 系列处理器的
+。我们把它移植到 HHBF533/HHBF561 开发板上。它可以被烧入到启动 ROM 中，并用于
+检测硬件或者下载和运行应用程序。
+
+U-Boot 的开发与 Linux 紧密相关，事实上，U-Boot 借用了 Linux 源码树中的部分代
+码。在 U-Boot 中有一些公共的头文件，当然也提供了一些专门的代码以支持 Linux 系
+统映象的引导。
+
+为了更好和更容易地配置、使用和扩展 U-Boot 的功能，你需要阅读并注意本文提到的一
+些细节。比如：所有的监听命令都使用了同样的调用接口，因而你可以非常方便地加上新
+的命令。此外，对于一些很少用到的代码(如硬件测试实用工具)，你也许不需要也不喜欢
+把它们加到监听器中，于是你可以动态地加载和运行它们。
+
+以下是 U-Boot 的一些特性：
+
+\begin{itemize}
+  \item 通过 RS-232 串行接口或者以太网口与主机连接通信。
+  \item 提供了基于 RS-232 的命令行接口。
+  \item 可以使用 TFTP 协议或者 Kermit 协议来下载映象。
+  \item 支持压缩的映象文件格式的下载和 FLASH 加载。
+  \item FLASH 映象管理系统支持多映象格式。
+  \item 可以把 U-Boot 期的习惯配置存储于 FLASH 中。
+  \item 支持执行引导期脚本命令。
+\end{itemize}
+
+更多关于 U-Boot 的信息请参考：
+\href{http://u-boot.sourceforge.net}{http://u-boot.sourceforge.net} 和 U-Boot 
+源码树中的 \texttt{`README' \& `ReleaseNotes'} 文件。
+
+\section{映象安装指示} \label{}
+可以有两种方法把一个准备好的 U-Boot 或 $\muup$Clinux 的 ROM 映象下载到板载内存 
+SDRAM 中
+。第一种是利用 Kermit 协议通过 UART1 串口下载，另外一种是利用 TFTP 协议通过以
+太网接口下载。其中串口下载比较慢，但是更为健壮。
+
+当你一开始得到/购到一块裸的开发板时，你需要学习使用 ADI 的 Visual DSP++(简记为
+`VDSP') 仿真软件来通过 JTAG 接口下载 RAM 版的 U-Boot 映象，然后再利用运行的这一
+RAM 版 U-Boot 下载和烧写 ROM 版 U-Boot 映象到板载 FLASH 闪存中。
+
+\subsection{第一次的映象烧写} \label{}
+\begin{enumerate}
+  \item 从我们的分发光盘中得到\footnote{在分发包解开目录`images'目录下有我们预
+    先编译制作好的各种映象文件。}或者自己构建(请参考第  \ref{uboot:build} 节)
+    RAM 版和 ROM 版 U-Boot 映象，并且确定 RAM 版是 ELF 格式而 ROM 版是裸二进制
+    格式。
+  \item 把开发板和 ADI 仿真器用 JTAG 接口连接，并且与主机用 RS-232 串口连接。
+  \item 运行 ICE Test 实用工具，并运行 VDSP 软件检测 BF533/BF561 开发板，如图 
+    \ref{fig:icetest}。
+  \item 在 VDSP 中下载 ELF 格式 RAM 版 U-Boot 映象。
+  \item 手工给一些寄存器初始化，比如： \texttt{`PLL\_CTL', `UART\_DLL', 
+    `EBIU\_SDGCTL', `EBIU\_SDBCTL', `EBIU\_SDRRC'} 等等。表 \ref{hhbf-reg} 和
+    图 \ref{fig:vdsp} 是典型的寄存器设置。
+
+\begin{table}[!htbp]
+  \caption{U-Boot 期典型的寄存器初始化值} \label{hhbf-reg}
+  \centering \ttfamily
+\begin{tabular}{||l||l|l|l||} \hline \hline
+  寄存器名& 系统复位值& HHBF533 的设置& HHBF561(CORE A) 的设置  \\\hline
+  EBIU\_AMBCTL0 & 0xffc2ffc2	& 0x7bb07bb0	& 0x7bb07bb0	\\ % ffc2 7bb0
+  EBIU\_AMBCTL1 & 0xffc2ffc2	& 0x99b37bb0	& 0x99b37bb0	\\ % 99b3 ffc2
+  EBIU\_AMGCTL  & 0x00f2	& 0x00f8	& 0x00f8	\\\hline
+  EBIU\_SDBCTL	& 0x00000000	& 0x00000013	& 0x00000015	\\
+  EBIU\_SDRRC	& 0x081a	& 0x074a	& 0x074a	\\
+  EBIU\_SDGCTL	& 0xe0088849	& 0x0091998d	& 0x0091998d	\\\hline
+  UART\_DLL	& 0x0000	& 0x0012	& 0x0012\footnote{这里没有打错
+		       ，这是 BF561 在仿真器下运行时的 BUG。}	\\\hline
+  PLL\_CTL	& 0x1400	& 0x1400	& 0x2800	\\\hline 寄存
+  PC		& 0xffa00000	& 0xffa00000	& 0xffa00000	\\\hline\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{icetest}
+  \includegraphics[width=\textwidth]{vdsp}
+  \caption{VDSP 中典型的寄存器初始化设置(HHBF561)} \label{fig:vdsp} 
+  \label{fig:icetest}
+  \centering \footnotesize
+  {\color{magenta}注意：}对于 HHBF533 需要做相应的修改，详见表 \ref{hhbf-reg}
+    HHBF533 一列。
+\end{figure}
+
+{\color{magenta}注意：}EBIU 系列寄存器设置之后读出来的值可能跟设置值不太一致。
+
+  \item 修改 PC 计数器，使它指向 RAM 版 U-Boot 映象的入口点(典型地是 
+    0x1000000)。
+  \item 运行一个串口终端(典型地在 MS Windows 中是 Hyper Terminal，在 GNU/Linux 
+    中是 \texttt{minicom})，连接到相应串口并设置波特率、校验位和检测位(典型地是
+    ：\texttt{`115200 8N1'}，如图 \ref{fig:hyperterm} 和图 \ref{fig:minicom})。
+
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{hyperterm}
+  \includegraphics[width=\textwidth]{minicom}
+  \caption{PC 主机上串口终端的设置} \label{fig:minicom} \label{fig:hyperterm}
+\end{figure}
+
+  \item 在 VDSP 中按下 \texttt{<F5>} 键使 BF533/BF561 开始运行 U-Boot 映象。
+    \footnote{在 BF561 中，如果运行后串口终端没有反应，则在 VDSP 中按下
+    \texttt{Shift + <F5>} 挂起 CPU，若 \texttt{PC Counter} 指向指令：
+    \texttt{STI R2;} 则再按下\texttt{<F5>} 继续让 CPU 运转，这下应该好了！
+    这也是 BF561 在 仿真器下的“不良反应”。}
+  \item 在运行的 U-Boot 中通过串口(或网口)下载 ROM 版 U-Boot 映象，并烧写到板
+    载 FLASH 闪存中：
+    典型地，首先在 U-Boot 提示符后启动串口下载程序 \texttt{`loadb'}，后面用一个
+    参数指定下载的内存地址：
+    \begin{quote} \ttfamily
+      BOOT> loadb 1000000
+    \end{quote}
+    之后在主机的串口终端中通过 Kermit 协议发送 ROM 版 U-Boot 映象，如图 
+    \ref{fig:ht-kermit} 和图 \ref{fig:gnu-kermit}。
+
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{ht-kermit}
+  \includegraphics[width=\textwidth]{gnu-kermit}
+  \caption{用 Kermit 协议串口发送文件} \label{fig:gnu-kermit}
+  \label{fig:ht-kermit}
+\end{figure}
+
+    传输完成后，把映象烧写到 FLASH 中，典型地：
+    \begin{quote} \ttfamily
+      BOOT> fl 20000000 1000000 20000
+    \end{quote}
+    %如图 \ref{fig:flash}。
+
+    关于下载和烧写映象的更详细的信息，请参考本节的最后两个小节，
+    \ref{uboot:img-serial} 和 \ref{uboot:img-eth} 以及第 \ref{uboot:using} 节。
+\end{enumerate}
+
+\subsection{准备映象文件} \label{}
+如果你的闪存足够大，不需要压缩映象或者组合 U-Boot 和 $\muup$Clinux 映象，那么你
+可以跳过这一节；否则你必须学习使用 \texttt{`mkimage'} 实用工具来从原始映象生成
+压缩映象或多映象组合。
+
+\texttt{`mkimage'} 工具是随着 U-Boot 一起分发的，你可以在 U-Boot 源码树的 
+\texttt{`tools'}目录中找到它。
+
+通常为了节省闪存空间，你需要压缩 $\muup$Clinux 映象，下面是你需要在 U-Boot 源
+码树根目录中做的事：
+\begin{quote} \ttfamily
+  \$ gzip -9 -c /path/to/linux.bin $>$ linux-bin.gz
+
+  \$ ./tools/mkimage -A blackfin -O uClinux -T kernel -C gzip $\backslash$ \\
+    -a 1000 -e 1000 -n "Blackfin uClinux System" $\backslash$ \\
+    -d linux-bin.gz zImage.bin
+\end{quote}
+最后生成的 \texttt{gzip} 压缩格式的 $\muup$Clinux 映象命名为 
+\texttt{`zImage.bin'}。
+
+{\color{magenta}注意：} 你需要指定 $\muup$Clinux 分发版中构建的 
+\texttt{`linux.bin'} 文件的实际路径。
+
+不带参数调用 \texttt{`mkimage'} 会打印出它的用法：
+\begin{quote} \ttfamily
+  \$ ./tools/mkimage
+\end{quote}
+
+实际上，如果仅需要生成 $\muup$Clinux 的 gzip 压缩映象，你不必这么麻烦；只需要
+在 U-Boot 根目录或者 Linux 内核根目录中运行下面的命令即可：
+\begin{quote} \ttfamily
+  \$ make zImage.bin
+\end{quote}
+最后生成的 \texttt{`zImage.bin'} 放在当前目录下，并且在 \texttt{/tftpboot} 目录
+下有一份拷贝。
+
+当前版本的分发包中，只要在\texttt{`uClinux-dist'} 目录下敲 \texttt{`make'} 就
+能自动完成所有这一切了。
+
+\subsection{通过串口烧写映象} \label{uboot:img-serial}
+\begin{enumerate}
+  \item 把 HHBF533/HHBF561 开发板的 UART1 串口与 PC 主机的串口正确连接。
+  \item 运行一个串口终端(典型地在 MS Windows 中是 Hyper Terminal，在 GNU/Linux 
+    中是 \texttt{minicom})，连接到相应串口并设置波特率、校验位和检测位(典型地是
+    ：\texttt{`115200 8N1'}，如图 \ref{fig:hyperterm} 和图 \ref{fig:minicom})。
+  \item 在 U-Boot 提示符后启动串口下载程序，后面用一个参数指定下载的内存地址，
+    典型地：
+    \begin{quote} \ttfamily
+      BOOT> loadb 1000000
+    \end{quote}
+  \item 在主机的串口终端中通过 Kermit 协议发送映象(典型地，$\muup$Clinux 映象 
+    \texttt{`zImage.bin'})，参考图 \ref{fig:ht-kermit} 和图 
+    \ref{fig:gnu-kermit}。
+  \item 传输完成后，把映象烧写到板载 FLASH 闪存中，比如：
+    \begin{quote} \ttfamily
+      BOOT> fl 20060000 1000000
+    \end{quote}
+    如图 \ref{fig:flash}。
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{flash}
+  \caption{把映象烧写到 FLASH 中} \label{fig:flash}
+\end{figure}
+
+{\color{magenta}注意：} \texttt{`fl'} 还有第三个参数可以指定烧写映象的大小
+    ，如果没有指定则从环境变量中读入映象的大小(这是由下载的程序 \texttt{`loadb'}
+    或 \texttt{`tftp'}设置的)。
+\end{enumerate}
+
+\subsection{通过以太网口烧写映象} \label{uboot:img-eth}
+\begin{enumerate}
+  \item 把所需的映象拷贝到主机 TFTP 服务器根目录中，典型地：
+    \begin{quote} \ttfamily
+      \$ cp -f /path/to/u-boot.bin /tftpboot/
+
+      \$ cp -f /path/to/zImage.bin /tftpboot/
+    \end{quote}
+
+    {\color{magenta}注意：}你需要映(\texttt{`u-boot.bin}' 
+    和 \texttt{`zImage.bin'})象的正确路径！
+
+    {\color{magenta}注意：}通常你不必做这一步，用 \texttt{`make'} 构建映象的
+    时候自动帮你完成了这一步。
+
+  \item 确定你主机上的 TFTP 服务器正确运行了：
+    \begin{quote} \ttfamily
+      \$ /etc/init.d/tftpd restart
+    \end{quote}
+  \item 把 HHBF533/HHBF561 开发板的 UART1 串口与 PC 主机的串口正确连接。
+  \item 把 HHBF533/HHBF561 开发板的网口与 PC 主机的网口直接用用于双机互连的双
+    绞线连接。
+  \item 设置主机的 IP 地址，用于做开发板的目标 TFTP 服务器(默认为
+    192.168.2.44)，典型地：
+    \begin{quote} \ttfamily
+      \$ ifconfig eth0 192.168.2.44
+    \end{quote}
+  \item 运行一个串口终端(典型地在 MS Windows 中是 Hyper Terminal，在 GNU/Linux 
+    中是 \texttt{minicom})，连接到相应串口并设置波特率、校验位和检测位(典型地是
+    ：\texttt{`115200 8N1'}，如图 \ref{fig:hyperterm} 和图 \ref{fig:minicom})。
+  \item 在 U-Boot 提示符后启动网口下载程序 \texttt{`tftp'}，后面的参数用于指定
+    下
+    载
+    的
+    内存地址和准备下载的映象文件名，典型地：
+    \begin{quote} \ttfamily
+      BOOT> tftp 1000000 zImage.bin
+    \end{quote}
+  \item 传输完成后，把映象烧写到板载 FLASH 闪存中，比如：
+    \begin{quote} \ttfamily
+      BOOT> fl 20060000 1000000
+    \end{quote}
+
+    {\color{magenta}注意：} \texttt{`fl'} 还有第三个参数可以指定烧写映象的大小
+    ，如果没有指定则从环境变量中读入映象的大小(这是由下载的程序 
+    \texttt{`loadb'} 或\texttt{`tftp'}设置的)。
+\end{enumerate}
+
+\subsection{典型的存储空间映射} \label{}
+\begin{table}[!htbp]
+  \caption{HHBF533 的 U-Boot 期存储映射} \label{hhbf533-mem}
+  \centering
+\begin{tabular}{||c|l||}
+  \hline \hline
+  \multicolumn{2}{||c||}{SDRAM(总共 32 MB)} \\\hline
+  {\ttfamily 0x00000000 - 0x00000fff} & 保留 \\\hline
+  {\ttfamily 0x00001000 - 0x00ffffff} & $\muup$Clinux 运行代码 \\\hline
+  {\ttfamily 0x01000000 - 0x015fffff} & 映象下载缓存 \\\hline
+  {\ttfamily 0x01600000 - 0x01f1bfff} & 保留 \\\hline
+  {\ttfamily 0x01f1c000 - 0x01f3bfff} & U-Boot 栈空间 \\\hline
+  {\ttfamily 0x01f3c000 - 0x01f3ffff} & U-Boot 全局数据(环境变量) \\\hline
+  {\ttfamily 0x01f40000 - 0x01f7ffff} & U-Boot 堆空间 \\\hline
+  {\ttfamily 0x01f80000 - 0x01ffffff} & U-Boot 运行代码\\\hline
+
+  \hline
+  \multicolumn{2}{||c||}{FLASH(总共 2 MB)} \\\hline
+  {\ttfamily 0x20000000 - 0x2002ffff} & U-Boot 二进制映象 \\\hline
+  {\ttfamily 0x20030000 - 0x2003ffff} & U-Boot 环境配置 \\\hline
+  {\ttfamily 0x20040000 - 0x201fffff} & $\muup$Clinux 二进制映象 \\\hline
+
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+  \caption{HHBF561 的 U-Boot 期存储映射} \label{hhbf561-mem}
+  \centering
+\begin{tabular}{||c|l||}
+  \hline \hline
+  \multicolumn{2}{||c||}{SDRAM(总共 64 MB)} \\\hline
+  {\ttfamily 0x00000000 - 0x00000fff} & 保留 \\\hline
+  {\ttfamily 0x00001000 - 0x00ffffff} & $\muup$Clinux 运行代码 \\\hline
+  {\ttfamily 0x01000000 - 0x015fffff} & 映象下载缓存 \\\hline
+  {\ttfamily 0x01600000 - 0x01f1bfff} & 保留 \\\hline
+  {\ttfamily 0x01f1c000 - 0x01f3bfff} & U-Boot 栈空间 \\\hline
+  {\ttfamily 0x01f3c000 - 0x01f3ffff} & U-Boot 全局数据(环境变量) \\\hline
+  {\ttfamily 0x01f40000 - 0x01f7ffff} & U-Boot 堆空间 \\\hline
+  {\ttfamily 0x01f80000 - 0x01ffffff} & U-Boot 运行代码\\\hline
+  {\ttfamily 0x02000000 - 0x03ffffff} & 保留给 CORE B 使用\\\hline
+
+  \hline
+  \multicolumn{2}{||c||}{FLASH(总共 16 MB)} \\\hline
+  {\ttfamily 0x20000000 - 0x2003ffff} & U-Boot 二进制映象 \\\hline
+  {\ttfamily 0x20040000 - 0x2005ffff} & U-Boot 环境配置 \\\hline
+  {\ttfamily 0x20060000 - 0x207fffff} & $\muup$Clinux 二进制映象 \\\hline
+  {\ttfamily 0x20800000 - 0x20ffffff} & 保留给 CORE B 使用 \\\hline
+
+  \hline
+\end{tabular}
+\end{table}
+
+\section{U-Boot 的使用} \label{uboot:using}
+开发板上电复位即从板载 FLASH 闪存中运行 U-Boot 映象，U-Boot 运行后即计数等待用
+户指示：如果用户没有动作，则计数结束后 U-Boot 自动从板载 FLASH 中引导 
+$\muup$Clinux 映象(见第 \ref{uboot:boot} 节)；如果在计数过程中用户按下 `y' 键
+，则 U-Boot 从默认的 TFTP 服务器(典型地，192.168.2.44)中下载新的 $\muup$Clinux 
+映象，烧写到 FLASH 中并引导该映象；如果在计数过程中用户按下任意的其它键(除 `y'
+键)，则 U-Boot 进入监听器程序等待用户输入命令，串口终端上出现 U-Boot 提示符：
+\texttt{BOOT> }。
+
+\subsection{U-Boot 引导 Linux 映象} \label{uboot:boot}
+\begin{figure}[htdp]
+  \caption{U-Boot 引导 Linux 映象之一} \label{fig:linux-1}
+  \includegraphics[width=\textwidth]{linux-1}
+  \includegraphics[width=\textwidth]{linux-2}
+\end{figure}
+\begin{figure}[htdp]
+  \caption{U-Boot 引导 Linux 映象之二} \label{fig:linux-2}
+  \includegraphics[width=\textwidth]{linux-3}
+  \includegraphics[width=\textwidth]{linux-4}
+\end{figure}
+
+\subsection{监听器命令}
+在 U-Boot 环境下输入 \texttt{`help'} 可以列出所有已实现并且编译进当前运行的 
+U-Boot 映象中的命令。
+
+如果输入 \texttt{`help <command>'} 则可以显示该命令的详细描述和用法。
+
+比如：
+\begin{quote} \ttfamily
+  BOOT> help
+
+  BOOT> help fl
+\end{quote}
+
+下面是所有已实现的监听器命令：
+\begin{verbatim}
+BOOT> help
+
+?       - alias for 'help'                                                      
+askenv  - get environment variables from stdin                                  
+autoscr - run script from memory                                                
+base    - print or set address offset                                           
+bdinfo  - print Board Info structure                                            
+bootelf - Boot from an ELF image in memory                                      
+bootm   - boot application image from memory                                    
+bootp   - boot image via network using BootP/TFTP protocol                      
+bootvx  - Boot vxWorks from an ELF image                                        
+cmp     - memory compare                                                        
+coninfo - print console devices and informations                                
+cp      - memory copy                                                           
+crc32   - checksum calculation                                                  
+dcache  - enable or disable data cache                                          
+echo    - echo args to console                                                  
+erase   - erase FLASH memory                                                    
+fl      - flush a file to FLASH memory                                          
+flinfo  - print FLASH memory information                                        
+go      - start application at address 'addr'                                   
+help    - print online help
+icache  - enable or disable instruction cache                                   
+iminfo  - print header information for application image                        
+in      - read data from an IO port                                             
+irqinfo - print information about IRQs                                          
+itest   - return true/false on integer compare                                 
+loadb   - load binary file over serial line (kermit mode)                       
+loop    - infinite loop on address range                                        
+md      - memory display                                                        
+mm      - memory modify (auto-incrementing)                                     
+mtest   - simple RAM test                                                       
+mw      - memory write (fill)                                                   
+nm      - memory modify (constant address)                                      
+oc      - over clocking                                                         
+out     - write datum to IO port                                                
+ping    - send ICMP ECHO_REQUEST to network host                                
+printenv- print environment variables                                           
+protect - enable or disable FLASH write protection                              
+rarpboot- boot image via network using RARP/TFTP protocol                       
+reset   - Perform RESET of the CPU                                              
+run     - run commands in an environment variable                               
+saveenv - save environment variables to persistent storage                      
+setenv  - set environment variables                                             
+sleep   - delay execution for some time
+tftpboot- boot image via network using TFTP protocol                            
+version - print monitor version                                                 
+BOOT>
+\end{verbatim}
+
+\subsection{U-Boot 的配置} \label{}
+U-Boot 支持用户根据实际的使用情况通过环境变量做一些动态的设置和调节，并且可以把
+这些设置`永久'保存到 FLASH 闪存中。
+
+环境变量的通过使用命令`setenv' 来设置，`printenv' 打印出所有已设置的环境变量
+，为了把变量设置保存到 FLASH 中可以使用命令 `saveenv'。调用 `setenv' 时只指定变
+量名而未指定变量值则将从环境中删除这一变量。只要你还没有保存环境变量，你都是
+工作在一个临时的环境变量的内存拷贝中。如果你不小心刷除了环境变量所保存的 FLASH
+区域，不用担心，你还有一个默认的环境变量设置。
+
+典型的使用如下：
+\begin{verbatim}
+BOOT> help setenv                                                               
+                                                                                
+setenv name value ...                                                           
+    - set environment variable 'name' to 'value ...'                            
+setenv name                                                                     
+    - delete environment variable 'name'                                        
+
+BOOTOT> printenv                                                               
+bootcmd=run linuxrun                                                            
+bootdelay=30                                                                    
+baudrate=115200                                                                 
+ipaddr=192.168.2.120                                                            
+serverip=192.168.2.44                                                           
+gatewayip=192.168.2.254                                                         
+netmask=255.255.255.0                                                           
+hostname=HHBF533                                                                
+netdev=eth0                                                                     
+netretry=yes                                                                    
+uboot=0x20000000                                                                
+linux=0x20060000                                                                
+loadaddr=0x01000000                                                             
+bootfile=zImage.bin                                                             
+tftp_boot=tftp;bootm;echo                                                       
+serial_boot=loadb;bootm;echo                                                    
+menucmd=tftp;fl linux;bootm;echo                                                
+autoload=yes                                                                    
+autostart=no                                                                    
+linuxrun=oc 495;bootm 0x20060000;echo                                           
+stdin=serial                                                                    
+stdout=serial                                                                   
+stderr=serial                                                                   
+                                                                                
+Environment size: 448/131068 bytes                                              
+BOOT> saveenv                                                                   
+                                                                                
+Saving Environment to Flash...                                                  
+Un-Protected 1 sectors                                                          
+Erasing Flash...        [XXXXX]                                                 
+Erased 1 sectors                                                                
+Writing to Flash...     ****************                                        
+done                                                                            
+Protected 1 sectors                                                             
+BOOT> 
+\end{verbatim}
+
+%Some configuration options can be set using Environment Variables:
+
+\section{为 HHBF533/HHBF561 创建 U-Boot 映象} \label{uboot:build}
+第一次创建 U-Boot 映象时，你需要在 U-Boot 源码树根目录中运行如下命令：
+\begin{quote} \ttfamily
+  \$ cd <ROOT\_OF\_U-BOOT>
+
+  \$ make mrproper
+
+  \$ make hhbf533\_config
+\end{quote}
+
+{\color{magenta}注意：} 请用实际的 U-Boot 源码树根目录路径来替换 
+\texttt{<ROOT\_OF\_U-BOOT>} 。
+
+{\color{magenta}注意：} 如果是 HHBF561 开发板分发包请使用`make 
+hhbf561\_config' 来配置。
+
+然后，可以用下面的命令创建 ROM 版 U-Boot 映象：
+\begin{quote} \ttfamily
+  \$ make clean
+
+  \$ make all
+\end{quote}
+或者用\texttt{`make rom'}，甚至直接敲 \texttt{`make'} 就可以了。
+
+下面的命令创建 RAM 版 U-Boot 映象：
+\begin{quote} \ttfamily
+  \$ make clean
+
+  \$ make ram
+\end{quote}
+
+下面的命令创建能在 Visual DSP 中正确加载执行的 RAM 版 U-Boot 映象：
+\begin{quote} \ttfamily
+  \$ make clean
+
+  \$ make dxe
+\end{quote}
+
+{\color{magenta}注意：}新生成的\texttt{`u-boot'} 是 ELF 格式映象，
+\texttt{`u-boot.bin'} 是相应的裸二进制映象，\texttt{`u-boot.ram'} 是可以在 
+SDRAM 中调试的映像，\texttt{`u-boot.dxe'} 是用于 Visual DSP 加载执行的映像。
+
+{\color{magenta}注意：} RAM 版 U-Boot 映象的默认加载地址
+(或者说入口点、正文基地址)是在 \texttt{0x1000000}。
+
+这在你需要改进 U-Boot 或者要添加功能时很有用：你可以先编译成 RAM 版调试或测试；
+类似于后面要说到的在 SDRAM 中调试 Linux。
+
+\subsection{在 SDRAM 中调试 Linux}
+为了调试 Linux 的方便你可以把 $\muup$Clinux 映象下载到板载 SDRAM 中，并直接在
+ U-Boot 中运行该映象，而不需要烧写到 FLASH 中。
+
+典型地，首先在 U-Boot 中通过串口或网口下载  $\muup$Clinux 映象(请参考第 
+\ref{uboot:img-serial} 节和第 \ref{uboot:img-eth} 节)；然后在 U-Boot 提示符后用 
+`go' 命令从入口点运行映象：
+\begin{quote} \ttfamily
+  BOOT> go 1000
+\end{quote}
+
+{\color{magenta}注意：}典型的 $\muup$Clinux 映象入口点是在 \texttt{0x1000}，所以你需要把映象下
+载到该地址！
+
+除此之外，你可以用 \texttt{`bootelf'} 命令来加载运行GNU ELF 格式的映象；这在你
+需要把一些代码或数据放置到片内 SRAM 中时很有用！
+
+\section{为 HHBF533/HHBF561 创建 $\muup$Clinux 内核映象} \label{uboot:linux}
+如果你想要调整、修改 $\muup$Clinux 的默认设置，你需要在 $\muup$Clinux 根目录下
+运行：
+\begin{quote} \ttfamily
+  \$ cd <ROOT\_OF\_UCLINUX>
+
+  \$ make menuconfig
+\end{quote}
+如果你只需要修改 Linux 内核的配置，那么你可以：
+\begin{quote} \ttfamily
+  \$ cd <ROOT\_OF\_UCLINUX>
+
+  \$ make linux\_menuconfig
+\end{quote}
+或者：
+\begin{quote} \ttfamily
+  \$ cd <ROOT\_OF\_LINUX\_KERNEL>
+
+  \$ make -C menuconfig
+\end{quote}
+{\color{magenta}注意：} 请用实际的 $\muup$Clinux 源码树根目录路径来替换
+\texttt{<ROOT\_OF\_UCLINUX>} ；用实际使用的 Linux 内核根目录路径来替换
+\texttt{<ROOT\_OF\_LINUX\_KERNEL>}。
+
+如图 \ref{fig:config-uclinux} \ref{fig:config-vendor} \ref{fig:config-linux}。
+
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{config-uclinux-1}
+  \includegraphics[width=\textwidth]{config-uclinux-2}
+  \caption{$\muup$Clinux Menuconfig} \label{fig:config-uclinux}
+\end{figure}
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{config-linux}
+  \includegraphics[width=\textwidth]{config-vendor}
+  \caption{$\muup$Clinux Vendor \& Linux Kernel Menuconfig} 
+  \label{fig:config-linux} \label{fig:config-vendor}
+\end{figure}
+
+如果你想调整$\muup$Clibc 库的配置，你还需要运行：
+\begin{quote} \ttfamily
+  \$ cd <ROOT\_OF\_UCLINUX>
+
+  \$ make -C uClibc menuconfig
+\end{quote}
+
+如图 \ref{fig:config-uclibc}。
+\begin{figure}[htdp]
+  \includegraphics[width=\textwidth]{config-uclibc}
+  \caption{$\muup$Clibc Menuconfig} \label{fig:config-uclibc}
+\end{figure}
+
+为了创建 $\muup$Clinux 映象，你需要运行：
+\begin{quote} \ttfamily
+  \$ make
+\end{quote}
+
+\section{关于 $\muup$Clinux 中一些驱动程序的使用说明} \label{}
+\subsection{BF561 CORE B 的二级引导驱动}
+{\color{magenta}注意：} 本节仅限于 {\em HHBF561} 开发板。
+
+为了使用这个驱动，你必须在 Linux 内核配置菜单中选中它，使之能编译进内核中。具
+体是在 {`Processor type and features'} 子菜单中的 {`BF561 CORE B second stage 
+loader'} 项。
+
+重新编译内核，并用之运行之后有两个用户接口：
+\begin{description}
+  \item[\texttt{/proc/coreb/load}]: 用于从 FLASH 中加载代码到适当位置。
+  \item[\texttt{/proc/coreb/hold}]: 用于启动 CORE B，开始执行代码\footnote{此
+    时 COREB 的入口点是：\texttt{0xFF600000}}。
+\end{description}
+{\color{magenta}注意：} 当前的二级引导驱动中已被限定为只能从
+\texttt{0x20800000} 地址之后的 FLASH 中加载代码；如果有额外的需求，则需要修改
+源代码（\texttt{linux-2.6.x/arch/bfinnommu/coreb/}）了。
+
+例如，在 $\muup$Clinux 启动运行之后：
+\begin{quote} \ttfamily
+  HHBF>-\# {\color{red}echo 0x20a00000 > /proc/coreb/load} \\
+  Loading code for CORE B from 0x20A00000 ... Done! \\
+  HHBF>-\# {\color{red}echo 0 > /proc/coreb/hold} \\
+  CORE B is running! \\
+  this is from L1! \\
+  this is from L2! \\
+  this is from L3! \\
+  HHBF>-\#
+\end{quote}
+你可以用以下命令查看 CORE B 的状态：
+\begin{quote} \ttfamily
+  HHBF>-\# {\color{red} cat /proc/coreb/load} \\
+  DXE base: 0x20A00000 \\
+  DXE skip: 0 \\
+  HHBF>-\# {\color{red} cat /proc/coreb/hold} \\
+  SICA\_SYSCR: 0x0020 \\
+  SICB\_SYSCR: 0x0020 \\
+  HHBF>-\#
+\end{quote}
+
+\subsection{以太网驱动和网络应用服务}
+关于以太网驱动，目前已测试过的应用程序包括 \texttt{inetd, telnetd, ftpd, 
+telnet, nfsmount, socket, flood ping}等。
+
+这些程序的使用都很简单，这里不再赘述。需要注意的是，nfsmount 需要加上 
+\texttt{`-o nolock'} 选项才能正常工作，如：
+\begin{quote} \ttfamily
+  HHBF>-\# mount {\color{red} -o nolock} 192.168.2.240:/tmp /mnt
+\end{quote}
+
+\subsection{音频驱动}
+为了能正确编译音频驱动，你需要在Linux 内核配置菜单的 `Sound' 子菜单中选中
+`Sound card support', `1836 Audio support for BF53x', `Advanced Linux Sound 
+Architecture', `OSS Mixer API', `OSS PCM (digital audio) API'。
+
+\subsubsection{简单的音频输入输出演示}
+这个音频 I/O 演示简单地把音频输入接口采集的数据不经处理地送到音频输出接口（
+即 \texttt{talktrough} 的工作模式）：
+\begin{quote} \ttfamily
+  HHBF>-\# echo 1 > /proc/asound/card0/talktrough
+\end{quote}
+关闭 \texttt{talktrough} 模式：
+\begin{quote} \ttfamily
+  HHBF>-\# echo 0 > /proc/asound/card0/talktrough
+\end{quote}
+
+\subsubsection{音频录／放演示}
+用于录／放音频的应用程序分别是\texttt{`ossrec'} 和 \texttt{`ossplay'}，需要在
+$\muup$Clinux 的{`Customize Vendor/User Setting'} 配置菜单中
+{`Blackfin test programs'}子菜单{`Audio test program'} 项来使之正确编译安装。
+
+在 $\muup$Clinux 启动进入 SHELL 提示符之后：
+\begin{quote} \ttfamily
+  HHBF>-\# mount -o nolock 192.168.2.240:/tmp /mnt \\
+  HHBF>-\# ossrec hhbfau.raw \\
+  HHBF>-\# ossplay foo.wav
+\end{quote}
+不带参数地运行 \texttt{`ossrec'} 和 \texttt{`ossplay'} 可以得到它们的用法。
+
+\subsection{视频驱动}
+为了编译视频驱动，你需要在 Linux 内核配置菜单的 `Multimedia devices' 子菜单中选
+中 `Video For Linux' 和 `HHBF board video support' 项（它实际上还依赖选择了｀
+I2C' 驱动中的一些选项：`I2C bit-banging interfaces' \&
+`HHBF533/561 I2C support'）。
+
+\subsubsection{简单的视频输入输出演示}
+这个视频 I/O 演示简单地把视频输入接口采集的数据不经处理地送到视频输出接口（
+即 \texttt{talktrough} 的工作模式）：
+\begin{quote} \ttfamily
+  HHBF>-\# echo 1 > /proc/video/talktrough
+\end{quote}
+关闭 \texttt{talktrough} 模式：
+\begin{quote} \ttfamily
+  HHBF>-\# echo 0 > /proc/video/talktrough
+\end{quote}
+
+\subsubsection{用于视频编解码演示的应用程序}
+用于视频编解码演示（测试）的应用程序（包括两个开发板应用程序和两个PC 机应用程
+序）实际上都是网络（socket）通信程序；它们可以通过选中 $\muup$Clinux 的
+{`Customize Vendor/User Setting'} 配置菜单中{`Blackfin test programs'}子菜单
+{`Video Input/Output test utilities'} 项来使之正确编译安装。
+
+{\bf\large 视频编码演示}
+
+假设你已经把视频编码器代码烧写到 \texttt{0x20800000}中了，在 $\muup$Clinux 启动
+进入 SHELL 提示符之后：
+
+{\ttfamily
+\begin{tabular}{l||l} \ttfamily
+  {　　　　　　　[HHBF561 board]} & {　　　　　　　[PC host]} \\ \hline
+  HHBF>-\# echo 0x20800000 > /proc/coreb/load & \$ \\
+  HHBF>-\# vsvr & \$ cd <ROOT\_OF\_UCLINUX>/user/video \\
+  　 & \$ ./hvclt \\
+\end{tabular}
+}
+
+然后在 PC 主机上会新生成一个 \texttt{`test/5.xvid'} 其中的内容是 CORE B 做视频
+采集并进行 MPEG4 编码后经由 CORE A 发送出来的码流。
+
+{\bf\large 视频解码演示}
+
+假设你已经把视频解码器代码烧写到 \texttt{0x20900000}中了，在 $\muup$Clinux 启动
+进入 SHELL 提示符之后：
+
+{\ttfamily
+\begin{tabular}{l||l}
+  {　　　　　　　[HHBF561 board]} & {　　　　　　　[PC host]} \\ \hline
+  HHBF>-\# echo 0x20900000 > /proc/coreb/load & \$ cd 
+      <ROOT\_OF\_UCLINUX>/user/video \\
+  HHBF>-\# vclt & \$ ./hvsvr \\
+\end{tabular}
+}
+
+这里，PC 主机把一个码流文件（\texttt{`test/vstream.dat'}）的内容发送给 CORE A，
+再提交给 CORE B 解码输出到视频输出接口。
+
+\subsubsection{Frame Buffer 驱动}
+为了使用 Frame Buffer 驱动，你必须在内核配置菜单的 {`Graphic Support'} 子菜单中
+选中 {`Support for frame buffer devices'} 和 {`HHBF frame buffer support'}。
+
+Frame Buffer 驱动的应用程序接口是\texttt{`/dev/fb*'} （其中，`*' 表示第几个 
+Frame Buffer 设备，相应于从设备号；一般系统中只有一个 Frame Buffer 设备，所以
+实际的接口是\texttt{`/dev/fb0'}）。
+
+\texttt{`/dev/fb0'} 实际上是“显存”的裸映射，因此读写 Frame Buffer 的设备文件
+就相当于读写显存了。
+
+\begin{quote} \ttfamily
+  HHBF>-\# mount -o nolock 192.168.2.240:/tmp /mnt \\
+  HHBF>-\# cat /dev/fb0 > /mnt/hhbffb.raw \\
+  HHBF>-\# cat /mnt/test.raw > /dev/fb0
+\end{quote}
+
+由于显存快照是像素对应的‘裸’文件，为了能正确的转换和显示，还需要两个辅助程序
+：\texttt{bmp2raw} 和 \texttt{raw2bmp}，用于在裸图像文件和位图文件格式之间转换
+。你可以在内核源码树的\texttt{linux-2.6.x/drivers/video/hhbffb/test} 目录中
+找到它们。
+\begin{quote} \ttfamily
+  \$ bmp2raw test.bmp test.raw \\
+  \$ raw2bmp hhbffb.raw hhbffb.bmp
+\end{quote}
+
+{\color{magenta}注意：} 这两个辅助程序的实现很简单，基本上就是添加／删除 BMP 
+图像文件格式的文件头，这里处理的是 RGB 24 的像素。包括 Frame Buffer 驱动，当前
+都只实现了 RGB 24 像素的处理。
+
+通过这些操作你可以把一幅 720x576 像素的 BMP 图像刷到视频输出显式上；也可以
+反向地截取视频输出屏的图像内容存成一幅 720x576 像素的 BMP 文件。
+
+\subsubsection{V4L2 驱动}
+仍在实现中\ldots\ldots
+
+\subsection{片内 SRAM 的测试程序}
+在 $\muup$Clinux 的内核配置菜单`Processor type and features' 子菜单中选中
+`On-chip SRAM test driver' 项，并重新编译。
+
+为了能够使用片内 SRAM，我们必须使用 ELF 格式的内核映像文件——编译后在 Linux 
+内核根目录下的 \texttt{`vmlinux'} 即是。
+
+在 U-Boot 中下载 \texttt{`vmlinux'} 后，必须用 \texttt{`bootelf'} 引导。假设你
+已经把 \texttt{`vmlinux'} 拷到 PC 机 TFTP 服务的根目录下：
+\begin{quote} \ttfamily
+  BOOT> tftp 1000000 vmlinux; bootelf
+\end{quote}
+
+正确运行 $\muup$Clinux 后在 \texttt{`/proc'} 文件系统中会多出一个接口
+\texttt{`sram'}，用于测试／演示片内
+SRAM 的使用：
+\begin{quote} \ttfamily
+  HHBF>-\# cat /proc/sram
+\end{quote}
+之后系统打印的信息能让你确认是否能够正常使用片内 SRAM。
+
+\subsection{IPC 测试程序}
+感谢南京天朗电子的陶猛提供了部分测试代码。
+
+{\bf\large POSIX threads 测试}
+
+把 \texttt{`<ROOT\_OF\_UCLINUX>/user/hhtech/pthtest'} 中的代码编译安装进 
+$\muup$Clinux 的 ROMFS 中，系统运行之后执行这些代码，你应该能得到你想要的结果。
+
+另外，$\muup$Clinux 中本来就有一个多进程测试程序，你可以在{`Customize 
+Vendor/User Setting'} 配置菜单的{`Miscellaneous Applications'}子菜单中选中
+{`pThreads threaddemos'}。
+
+{\bf\large System V IPC 测试}
+
+把 \texttt{`<ROOT\_OF\_UCLINUX>/user/hhtech/mqtest'} 中的代码编译安装进 
+$\muup$Clinux 的 ROMFS 中，系统运行之后执行这些代码，你应该能得到你想要的结果。
+
+\section{常见问题与解答} \label{}
+正在收集中 \ldots \ldots
+
+\iffalse
+\newpage
+\thebibliography{99}
+\makeatletter \renewcommand\@biblabel[1]{#1} \makeatother
+%\cite[append-info]{keyword}
+%\begin{thebibliography}{label-style}
+%\bibitem[label]{keyword}text-item
+\bibitem[\HandRight]{mp3ext}
+    ``{\it MP3 Extensions}'', Alex Beregszaszi, November 28, 2003.
+   (\href{http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}
+	 {http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}) \\
+    {\sl provide the informal explaination of MP3 Xing VBR header,
+	 LAME header, etc.}
+%\end{thebibliography}
+\nocite{*}
+%\bibliography{biblio}	% 参考资料
+%\bibliographystyle{plain}	% unsrt, alpha, abbrev
+
+\newpage
+\begin{appendix}	% 附录
+    \renewcommand{\thesection}{附录\Alph{section}}
+    %\addcontentsline{toc}{section}{\thesection~~}
+    \appendix \section{Part of C sources}
+    hhhhhhhh \ding{223}
+
+    含含糊糊含含糊糊黑糊糊
+\end{appendix}
+\fi
+
+%\printidx
+\end{CJK*} \end{document}
+
+ %%%%%%%%%%%%%%%%%%%% End Of File: hhbf-manual.tex %%%%%%%%%%%%%%%%%%%%

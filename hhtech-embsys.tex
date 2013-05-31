@@ -1,0 +1,345 @@
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % $ID: hhtech-embsys.tex Wed, 29 Dec 2004 13:01:54 +0800  mhfan $ %
+ %                                                              %
+ % Description:                                                 %
+ %                                                              %
+ % Maintainer:  ·¶ÃÀ»Ô(Meihui Fan)  <mhfan@ustc.edu>            %
+ %                                                              %
+ % CopyRight (c)  2004  HHTech                                  %
+ %   www.hhcn.com, www.hhcn.org                                 %
+ %   All rights reserved.                                       %
+ %                                                              %
+ % This file is free software;                                  %
+ %   you are free to modify and/or redistribute it  	        %
+ %   under the terms of the GNU General Public Licence (GPL).   %
+ %                                                              %
+ % Last modified: Thu, 20 Jul 2006 10:45:52 +0800      by mhfan #
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listfiles % (should list the files loaded and it's versions).
+
+\documentclass[cjk]{beamer}
+% For a green structure color use:
+%\colorlet{structure}{green!50!black}
+%\setbeamercolor{math text}{fg=green!50!black}
+%\setbeamercolor{normal text in math text}{parent=math text}
+\setbeamercovered{dynamic}
+
+\mode<article> { % only for the article version
+  \usepackage{fullpage}
+}
+
+\mode<presentation> {
+  \usetheme{Warsaw}		    % or ...
+  \usefonttheme[onlysmall]{structurebold}
+  \setbeamertemplate{background canvas}[vertical shading]
+				       [bottom=red!10,top=blue!10]
+  \setbeamercovered{transparent}    % or whatever (possibly just delete it)
+}
+
+\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade}
+\usepackage[english]{babel}	    % or whatever
+\usepackage[latin1]{inputenc}	    % or whatever
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+\usepackage{times}
+\usepackage[T1]{fontenc}
+
+\usepackage{CJK,ifthen,inputenc,fontenc,colortbl}%,ipalmacs
+\usepackage{latexsym,amssymb,amsfonts,textcomp,pxfonts,txfonts,pifont,bbding}
+\usepackage{marvosym,stmaryrd,ifsym,tipa,ulsy,dingbat,ipa,wasysym,manfnt} %
+\usepackage{longtable,multirow,hhline,dcolumn,tabularx,array}
+\usepackage{makeidx,verbatim,fancybox}
+
+%\usepackage{fancyhdr}   % fancy header & footer, box
+%\newcommand{\makeheadrule}{         % $(A6(ReR3C<:aO_(B
+%  \rule[.7\baselineskip]{\headwidth}{1.2pt}\vskip-0.97\baselineskip
+%  \rule[.6\baselineskip]{\headwidth}{0.4pt}}
+%%  \makebox[-3pt][l]{\rule[.7\baselineskip]{\headwidth}{0.4pt}}
+%%  \rule[0.85\baselineskip]{\headwidth}{1.5pt}\vskip-.8\baselineskip}
+%  \makeatletter
+%  \renewcommand{\headrule}{
+%        {\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi}\makeheadrule}
+%  \makeatother
+
+\usepackage{graphicx,subfigure,wrapfig} % for graph
+\graphicspath {{./}{figs/}} % set graphics path
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.jpg,.jpeg,.pdf,.gif,.png}
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+%\usepackage{geometry}
+%\usepackage[a4paper,pdftex]{geometry}
+%\geometry{top=1.7cm,bottom=2cm,left=2.5cm,right=2.1cm}
+%\geometry{body={15.6cm, 20cm}, centering, dvipdfm}
+%\geometry{a4paper=true, pdftex=true}
+
+\usepackage{hyperref}
+%\usepackage[CJKbookmarks,dvipdf,bookmarks=true]{hyperref}
+% setup hyperref for PDF nevigation:
+  \hypersetup{colorlinks, linkcolor=blue, citecolor=blue, urlcolor=red,%
+        plainpages=true, bookmarksopen=false,%
+        pdfhighlight=/P, %/I(inverse) /N(no effect) /O(outline) /P(inset)
+        pdfauthor={Meihui Fan <mhfan@ustc.edu>},%
+        pdftitle={A LaTeX example collection},%
+        pdfsubject={LaTeX, TeX},%
+        pdfkeywords={LaTeX, TeX, Typesetting},%
+        pdfstartview=FitH, %FitBH, FitB
+        pdfview=FitH,
+	pdfpagemode=FullScreen, %None, UseOutlines, UseThumbs
+	CJKbookmarks=true, dvipdf=true, bookmarks=true,
+}
+
+\usepackage{listings} %[mathscope]
+  \lstloadlanguages{C++, bash, tcl, VHDL, Haskell, Lisp, TeX, Oz, Perl, make}
+  %\lstinline!char foo='c';!    % ! can be #, %, $, etc.
+  \lstset{language=C, tabsize=8, keepspaces=true,
+        columns=fixed, %flexiblecolumns=true,
+        numbers=left, stepnumber=1, numberstyle=\tiny,
+        basicstyle=\small\ttfamily, showspaces=false,
+        %identifierstyle=\color{blue},
+        stringstyle=\color{magenta},
+        keywordstyle=\color{green}\textbf,
+        commentstyle=\color{cyan}\bfseries\itshape,
+        %classoffset=2,
+	morekeywords={typedef,struct,enum,int,long,unsigned,uint32_t,uint64_t},
+        %keywordstyle=[2]\color{green}\bfseries,
+        %breaklines=true, breakautoindent=true, breakindent=4em,
+        escapeinside={/*@}{@*/}
+}
+
+%\newcommand{}          % newcommand definition:
+%\renewcommand{}        % redefine command:
+%\renewcommand{\headrule}{}
+%\renewcommand\labelitemi{\small\EightFlowerPetal}
+%\renewcommand\labelitemii{\small\SixFlowerAltPetal}
+%\renewcommand\labelitemiii{\small\FiveStarConvex}
+\newcommand{\ucl}{$\muup$Clinux~}
+\def\Cplusplus{{ \rm C\raise.5ex\hbox{\small ++}}~}
+
+\setlength{\parskip}{4pt plus1pt minus1pt}
+
+% Don't report over-full v/h-boxes if over-edge is small.
+\vfuzz 2pt \hfuzz 2pt
+\iffalse
+% indent 2 Chinese characters befor each paragraph.
+\setlength{\parindent}{2em} %\parskip 3mm
+\makeatletter               % indent the first paragraph. [indentfirst]
+    \let\@afterindentfalse\@afterindenttrue\@afterindenttrue
+\makeatother
+\fi
+
+\title[Linux Embedded Everywhere]{
+  Ç¶ÈëÊ½ Linux ÏµÍ³Èí¼ş¿ª·¢¾­ÑéÂşÌ¸ \\
+}
+\subtitle{©¤©¤»ªºã¿Æ¼¼ 2006 ĞÂÔ±¹¤ÅàÑµ}
+
+\author[M.H.Fan]{
+  ·¶~ÃÀ~»Ô \\ $<$\href{mailto:mhfan@hhcn.com}{mhfan@hhcn.com}$>$ \\
+}
+
+\institute[Dep. Soft. HH Tech]{
+  Èí¼şÑĞ·¢²¿ÃÅ \\
+  {\bf »ª~ºã~¿Æ~¼¼ } \\
+}
+
+\date[\thisyear]{2006 Äê 7 ÔÂ 20 ÈÕ}
+
+% This is only inserted into the PDF information catalog. Can be left out. 
+\subject{Development Meeting}
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+%\pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+%\logo{\pgfuseimage{university-logo}}
+
+% If you wish to uncover everything in a step-wise fashion:
+%\beamerdefaultoverlayspecification{<+->}
+
+\begin{document} \begin{CJK}{GBK}{song}
+
+  \frame{\titlepage}
+    
+  % You might wish to add the option [pausesections]
+  \section<presentation>*{Outline}
+  \begin{frame}
+    \frametitle{Outline}
+    \tableofcontents[part=1,pausesections]
+  \end{frame}
+
+  % Delete this, if you do not want the table of contents to pop up at
+  % the beginning of each subsection:
+  \AtBeginSubsection[]{
+    \begin{frame}<beamer>
+      \frametitle{Outline} %currentsection,currentsubsection
+      \tableofcontents[current]
+    \end{frame}
+  }
+
+  \section{Ç¶ÈëÊ½ Linux ¿ª·¢µÄÌØµã}
+    \begin{frame}
+      \frametitle{Ç¶ÈëÊ½ Linux ¿ª·¢µÄÌØµã}
+      \begin{itemize}
+	\uncover<1-> {\item ½»²æ±àÒë»·¾³}
+	\uncover<2-> {\item Ç¶ÈëÊ½ÏµÍ³ \alert{×ÊÔ´ÊÜÏŞ}£¡}
+	  \begin{itemize}
+	    \item<3-> CPU¡¢Memory ×ÊÔ´ÊÜÏŞ©¤©¤Ê±¼ä¡¢¿Õ¼äÓÅ»¯
+	    \item<3-> µ÷ÊÔ·½Ê½¡¢·ÖÎö·½·¨ÊÜÏŞ©¤©¤±¾µØ¿ª·¢¡¢µ÷ÊÔ
+	    \item<3-> \alert{Ê¹ÓÃ×îÉÙµÄ×ÊÔ´·¢»Ó×î´óµÄ¼ÛÖµ}
+	  \end{itemize}
+	\uncover<4-> {\item Linux ÊÇÒ»¸ö¿ª·ÅµÄÆ½Ì¨}
+	  \begin{itemize}
+	    \item<4-> ¿ª·ÅµÄÍøÂç×ÊÔ´
+	    \item<4-> ¿ª·ÅµÄÎÄµµ
+	    \item<4-> \alert{¿ª·ÅµÄ´úÂë}
+	  \end{itemize}
+      \end{itemize}
+    \end{frame}
+    \begin{frame}
+      \frametitle{½»²æ±àÒë»·¾³}
+      \begin{itemize}
+	\item<1-> ½»²æ±àÒëµÄ¸ÅÄî£º
+	  \begin{itemize}
+	    \item<2-> ±àÒë»úÆ÷£¨build£©
+	    \item<2-> ËŞÖ÷»úÆ÷£¨host£©
+	    \item<2-> Ä¿±ê»úÆ÷£¨target£©
+	  \end{itemize}
+	\item<3-> ½»²æ¹¤¾ßÁ´µÄ×é³É£º
+	  \begin{itemize}
+	    \item<3-> gcc£ºC/\Cplusplus ÓïÑÔµÄÔ¤´¦ÀíÆ÷¡¢±àÒëÆ÷ºÍÁ´½ÓÆ÷
+	    \item<3-> libc£º±ê×¼ C ¿â»òÕß uClibc/newlib µÈÌæ´úÆ·
+	    \item<3-> binutils£º´¦Àí¶ş½øÖÆÎÄ¼şµÄ¹¤¾ß°üÀ¨»ã±àÆ÷
+	    \item<3-> kernel header
+	    \item<3-> gdb/gdbserver
+	  \end{itemize}
+	\item<4-> ½»²æ¹¤¾ßÁ´µÄ¹¹½¨©¤©¤crosstool/buildroot
+      \end{itemize}
+    \end{frame}
+
+  \section{ÄÚºË¡¢Çı¶¯µÈµ×²ã¿ª·¢}
+    \begin{frame}
+      \frametitle{µ×²ã¿ª·¢µÄÌØµã}
+      \begin{itemize}
+	\item<1-> ÓëÓ²¼ş½áºÏ½ôÃÜ
+	\item<2-> Çı¶¯½á¹¹·Ö²ã£º
+	  \begin{itemize}
+	    \item<3-> ÎïÀí²ã©¤©¤ÌåÏµ½á¹¹Ïà¹Ø¡¢ÒÀÀµÓ²¼ş
+	    \item<3-> ÖĞ¼ä²ã©¤©¤ÏàÓ¦Êı¾İµÄÎ¬»¤ºÍ¹ÜÀí
+	    \item<3-> ½Ó¿Ú²ã©¤©¤ÄÚºËÌ¬ÓëÓ¦ÓÃ²ãµÄÍ¨ĞÅ
+	  \end{itemize}
+	\item<4-> Çı¶¯Ìá¹©¸øÉÏ²ã\alert{»úÖÆ}¶ø·Ç²ßÂÔ
+	\item<5-> ĞŞ¸Ä Vs. \alert{ÖØĞ´}
+	\item<6-> Éè±¸Çı¶¯ Vs. ProcFS/SysFS
+      \end{itemize}
+    \end{frame}
+
+    \begin{lstlisting}
+#define	LCD_REGS_NUM			(20)
+static union {
+    __u8 __[LCD_REGS_NUM];
+    struct lcd_regs {
+	union {	     __u8 _;
+	    struct { __u8 vcom_ac:3, xxxxx:5; };
+	}   r00;	// 0x03
+	// 200 mV / LSB // default AC: 5.6 V (5.00 V ~ 6.40 V)
+	// ...  ...
+	union {	     __u8 _;
+	    struct { __u8 hdir:1, vdir:1, mode:2, sel:2, xx:2; };
+	    // NOTE: set sel to 0x01 for RGB666
+	}   r04;	// 0x0b
+	// ...  ...
+    }	regs;
+}   hhbf_lcdr;
+    \end{lstlisting}
+
+  \section{ÏµÍ³ÉÏ²ãÓ¦ÓÃ¿ª·¢}
+    \begin{frame}
+      \frametitle{Ó¦ÓÃ¿ª·¢µÄÌØµã}
+      \begin{itemize}
+	\item<1-> Linux ÏµÍ³ÊÇ C ÓïÑÔµÄĞéÄâ»ú
+	\item<2-> ¿ÉÒÆÖ²ĞÔ Vs. ´úÂëÓÅ»¯
+	  \begin{itemize}
+	    \item<3-> ×Ö½ÚĞòÎÊÌâ
+	    \item<4-> ÄÚ´æ·ÃÎÊµØÖ·µÄ¶ÔÆëÎÊÌâ
+	    \item<5-> ±àÒëÁ´½ÓÊ±µÄ·ûºÅ½âÎöºÍÖØ¶¨Î»ÎÊÌâ
+	  \end{itemize}
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{ÒÆÖ²¿ª·¢µÄÍÆ¼öÄ¿Â¼²¼¾Ö}
+      \begin{itemize}
+	\item project/
+	  \pause
+	  \begin{itemize}
+	    \item project-src/
+	    \pause
+	    \item build-i386/
+	    \item build-arm/
+	    \item build-\ldots/
+	  \end{itemize}
+	  \pause
+	\item ÀûÓÃ {\texttt lndir} Í³Ò»´úÂë
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+      \frametitle{use right tool to do right thing!}
+      \begin{itemize}
+	\item<1-> ´úÂëÎ¬»¤/°æ±¾¹ÜÀí©¤©¤SVN/CVS/GIT/Mercurial\ldots
+	\item<2-> ´úÂëÊ±¼äĞÔÄÜ·ÖÎö©¤©¤Oprofile/gprof\ldots
+	\item<3-> ´úÂë¿Õ¼äĞÔÄÜ·ÖÎö©¤©¤valgrind/dmalloc\ldots
+	\item<4-> readelf/objdump/nm/size/line\ldots
+      \end{itemize}
+    \end{frame}
+
+%    \subsection{{\texttt union} ºÍ {\texttt \_\_attribute\_\_}}
+    \begin{lstlisting}
+typedef struct __attribute__((packed)) cmv_format_t {
+    // ... ...
+    union {
+	float    fDisplayRatio;	// logical format
+	uint32_t nDisplayRatio;	// storage format
+    };
+    // ... ...
+    union {
+	uint64_t full;
+	struct { uint32_t low, high; };
+    };
+    // ... ...
+}   cmv_format_t;
+    \end{lstlisting}
+
+  \section*{¿ª·¢¾­Ñé×Ü½á}
+    \begin{frame}
+      \frametitle<presentation>{¿ª·¢¾­Ñé×Ü½á}
+      \begin{itemize}
+	\item<1-> Ó¦ÓÃ¿ª·¢©¤©¤¾¡Á¿²ÉÓÃ±¾µØ¿ª·¢¡¢µ÷ÊÔ
+	\item<2-> Çı¶¯¿ª·¢©¤©¤½á¹¹¹æ·¶¡¢½Ó¿Ú±ê×¼¡¢¹¦ÄÜÕı½»
+	\item<3-> ×¢ÒâÌåÏµ½á¹¹µÄÌØµã£º×Ö½ÚĞò¡¢ÄÚ´æµØÖ·¶ÔÆë
+	\item<4-> Á´½Ó¿âµÄË³Ğò£¬±àÒëÖ¸Ê¾£¬C ÓïÑÔÖĞÁªºÏ¡¢Î»¶ÎµÄÔËÓÃ
+	\item<5-> ÓÃÕıÈ·µÄ¹¤¾ßÈ¥×öÕıÈ·µÄÊÂ
+	\item<5-> ²Î¿¼¡¢ÔÄ¶Á¿ª·ÅµÄÎÄµµ¡¢´úÂëµÈ×ÊÔ´
+      \end{itemize}
+    \end{frame}
+
+  \section*{ÍÆ¼öÔÄ¶Á/²Î¿¼}
+    \begin{frame}
+      \frametitle{ÍÆ¼öÔÄ¶Á/²Î¿¼}
+      \begin{itemize}
+	\item \alert{¡¶ÉîÈëÀí½â¼ÆËã»úÏµÍ³¡·}
+	\item \alert{LDD2/LDD3}
+	\item \alert{APUE}
+	\item ``Linker \& Loader''
+      \end{itemize}
+    \end{frame}
+
+  \begin{frame} % Thanks page
+    \begin{figure}[htdp]
+      \includegraphics[width=\textwidth]{thanks}
+    \end{figure}
+  \end{frame}
+
+\end{CJK} \end{document}
+
+ %%%%%%%%%%%%%%%% End Of File: hhtech-embsys.tex %%%%%%%%%%%%%%%%

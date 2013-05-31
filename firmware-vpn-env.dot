@@ -1,0 +1,29 @@
+digraph FW_BENCH_ENV {
+
+    style=solid;
+    node [shape=box];
+    edge [dir=both];
+
+    subgraph cluster_FWa {
+	LANa [label="LAN a", color=blue];
+	label="FIREWALL a";
+	WANa [label="WAN", color=red ];
+	//color=green;
+    }
+
+    subgraph cluster_FWb {
+	WANb [label="WAN", color=red ];
+	label="FIREWALL b";
+	LANb [label="LAN b", color=cyan];
+	//color=green;
+    }
+
+    PCa [label="PC a", color=blue];
+    PCb [label="PC b", color=cyan];
+
+    PCa  -> LANa [color=blue];
+    WANa -> WANb [color=red ];
+    LANb -> PCb  [color=cyan];
+
+    label="\n              powered by GraphViz\n"
+}

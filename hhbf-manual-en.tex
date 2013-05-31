@@ -1,0 +1,522 @@
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % $ID: u-boot.tex     Tue, 07 Sep 2004 23:30:19 +0800  mhfan $ %
+ %                                                              %
+ % Description:                                                 %
+ %                                                              %
+ % Maintainer:  范美辉(Meihui Fan)  <mhfan@ustc.edu>            %
+ %                                                              %
+ % CopyRight (c)  2004  HHTech                                  %
+ %   www.hhcn.com, www.hhcn.org                                 %
+ %   All rights reserved.                                       %
+ %                                                              %
+ % This file is free software;                                  %
+ %   you are free to modify and/or redistribute it  	        %
+ %   under the terms of the GNU General Public Licence (GPL).   %
+ %                                                              %
+ % Last modified: Mon, 18 Oct 2004 21:45:24 +0800      by mhfan #
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listfiles % (should list the files loaded and it's versions).
+
+\documentclass[a4paper]{scrartcl}  % letter, article, scrartcl, report, book
+			% 封面和扉页 % coverpage & titlepage
+			% default is 10pt, letterpaper; letter
+
+\usepackage{CJK,ifthen,inputenc,fontenc}%,ipalmacs
+\usepackage{latexsym,amssymb,amsfonts,textcomp,pxfonts,txfonts,pifont,bbding}
+\usepackage{marvosym,stmaryrd,ifsym,tipa,ulsy,dingbat,ipa,wasysym,manfnt} %
+\usepackage{longtable,multirow,hhline,dcolumn,tabularx,array}
+\usepackage{makeidx,verbatim,fancybox}
+
+\usepackage{fancyhdr}	% fancy header & footer, box
+\newcommand{\makeheadrule}{         % 定义页眉横线
+  \rule[.7\baselineskip]{\headwidth}{1.2pt}\vskip-0.97\baselineskip
+  \rule[.6\baselineskip]{\headwidth}{0.4pt}}
+%  \makebox[-3pt][l]{\rule[.7\baselineskip]{\headwidth}{0.4pt}}
+%  \rule[0.85\baselineskip]{\headwidth}{1.5pt}\vskip-.8\baselineskip}
+  \makeatletter
+  \renewcommand{\headrule}{
+  	{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi}\makeheadrule}
+  \makeatother
+
+\usepackage{graphicx,subfigure,wrapfig}	% for graph
+\graphicspath {{./}{figs/}} % set graphics path
+\DeclareGraphicsExtensions{.eps,.ps,.eps.gz,.ps.gz,.jpg,.jpeg,.pdf,.gif,.png}
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+\usepackage[a4paper,pdftex]{geometry}
+%\geometry{top=1.7cm,bottom=2cm,left=2.5cm,right=2.1cm}
+%\geometry{body={15.6cm, 20cm}, centering, dvipdfm}
+
+\usepackage[CJKbookmarks,dvipdf,bookmarks=true]{hyperref}
+% setup hyperref for PDF nevigation:
+  \hypersetup{colorlinks, linkcolor=blue, citecolor=blue, urlcolor=red,%
+	plainpages=true, bookmarksopen=false,%
+	pdfhighlight=/P, %/I(inverse) /N(no effect) /O(outline) /P(inset)
+	pdfauthor={Meihui Fan <mhfan@ustc.edu>},%
+	pdftitle={A LaTeX example collection},%
+	pdfsubject={LaTeX, TeX},%
+	pdfkeywords={LaTeX, TeX, Typesetting},%
+	pdfstartview=FitH, %FitBH, FitB
+	pdfview=FitH,
+	pdfpagemode=UseOutlines, %None, FullScreen, UseThumbs
+}
+
+\usepackage{listings} %[mathscope]
+  \lstloadlanguages{C++, bash, tcl, VHDL, Haskell, Lisp, TeX, Oz, Perl, make}
+  %\lstinline!char foo='c';!	% ! can be #, %, $, etc.
+  \lstset{language=C, tabsize=8, keepspaces=true,
+	columns=fixed, %flexiblecolumns=true,
+	numbers=left, stepnumber=1, numberstyle=\tiny,
+	basicstyle=\small\ttfamily, showspaces=false,
+	%identifierstyle=\color{blue},
+	stringstyle=\color{magenta},
+	keywordstyle=\color{green}\textbf,
+	commentstyle=\color{cyan}\bfseries\itshape,
+	%classoffset=2,
+	%morekeywords={typedef,struct,enum,int,long,unsigned},
+	%keywordstyle=[2]\color{green}\bfseries,
+	%breaklines=true, breakautoindent=true, breakindent=4em,
+	escapeinside={/*@}{@*/}
+}
+
+%\newcommand{}		% newcommand definition:
+%\renewcommand{}	% redefine command:
+%\renewcommand{\headrule}{}
+\renewcommand\labelitemi{\small\EightFlowerPetal}
+\renewcommand\labelitemii{\small\SixFlowerAltPetal}
+\renewcommand\labelitemiii{\small\FiveStarConvex}
+\setlength{\parskip}{4pt plus1pt minus1pt}
+
+% Don't report over-full v/h-boxes if over-edge is small.
+\vfuzz 2pt \hfuzz 2pt
+\setlength{\parindent}{0em} %\parskip 3mm
+\iffalse
+% indent 2 Chinese characters befor each paragraph.
+\setlength{\parindent}{2em} %\parskip 3mm
+\makeatletter		    % indent the first paragraph. [indentfirst]
+    \let\@afterindentfalse\@afterindenttrue
+    \@afterindenttrue
+\makeatother
+\fi
+
+\begin{document} \begin{CJK}{GBK}{song}
+
+\pagestyle{fancy}
+%\lhead{} \chead{} \rhead{}
+\lfoot{M.H. Fan} %\rfoot{\today} \cfoot{}	% 第\thepage页（共\lastpage页）
+%\CJKcaption{GB}
+
+\title{\Huge User Manual of \\ U-Boot for HHBF533/HHBF561 \vspace{1cm}} % 标题
+\author{Version 0.1 \vspace{1cm} \\
+Meihui Fan \\ {\CJKfamily{kai} 范~美~辉} \\	% 作者
+$<$\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}$>$ \\
+% {{{
+%\texttt{<}\href{mailto:mhfan@ustc.edu}{mhfan@ustc.edu}\texttt{>} \\
+%\texttt{\#}, \textless, \textgreater, \textlangle, \textrangle
+					% E-mail: mhfan@163.com
+%中国科学技术大学，生命科学学院 \\	% organization
+%安徽省合肥市四号信箱4号楼404室，230027} % address
+%\textit{Laboratory of Structural Biology, School of Life Science, USTC} \\
+%\textit{Room 4-404, P.O.Box 4, Hefei, Anhui, 230027 P. R. China} \\
+% }}}
+\vspace{2cm} \\ Copyleft \textcopyleft{} \number\year{}~ HHTech. Co., Ltd.
+\footnote{\href{http://www.hhcn.com}{http://www.hhcn.com}} \\
+All rights reserved. \\ \\ {\CJKfamily{li} 华恒科技 版权所有} \vspace{1cm}
+}
+%\date{}		% 日期
+\maketitle \titlepage	% generate the title, 标题页
+
+\iffalse
+\thanks{\bf\large ~ ~ ~Thanks}		% 致谢
+
+\begin{abstract}	% 摘要
+  \vspace{1cm} {\it Keywords: .}	% 关键字
+\end{abstract}
+\fi
+
+% {{{
+\newpage
+%\setcounter{tocdepth}{3}
+\tableofcontents	% 目录页
+%\listoffigures
+\listoftables
+
+\newpage
+%\thispagestyle{fancy}
+% }}}
+
+\renewcommand\thefootnote{\tiny\textcircled{\arabic{footnote}}}
+%\renewcommand\thefootnote{\tiny\makebox[0pt][l]{\circle}{\arabic{footnote}}}
+%\renewcommand\thefootnote{\scriptsize\ding{191 + \arabic{footnote}}}
+
+\section{Overview} \label{}
+The ``U-Boot'' Universal Bootloader project provides firmware with full source 
+code under GPL.
+
+U-Boot is a boot loader for Embedded boards, originally based on PowerPC and
+ARM processors, we port it to our HHBF533/HHBF561 development boards, which
+can be installed in a boot ROM and used to initialize and test the hardware
+or to download and run application code.
+
+The development of U-Boot is closely related to Linux: some parts of
+the source code originate in the Linux source tree, we have some
+header files in common, and special provision has been made to
+support booting of Linux images.
+
+Some attention has been paid to make this software easily
+configurable and extendable. For instance, all monitor commands are
+implemented with the same call interface, so that it's very easy to
+add new commands. Also, instead of permanently adding rarely used
+code (for instance hardware test utilities) to the monitor, you can
+load and run it dynamically. Some of the features are:
+
+\begin{itemize}
+  \item Host connectivity via RS-232 serial port or Ethernet
+  \item Command line interface via RS-232
+  \item Image downloads via TFTP, or Kermit protocol
+  \item Support for compressed images (download and flash load)
+  \item Flash Image System for managing multiple flash images
+  \item Flash stored configuration
+  \item Boot time script execution
+\end{itemize}
+
+For more information about U-Boot, refer to 
+\href{http://u-boot.sourceforge.net}{http://u-boot.sourceforge.net} and read 
+the ``README'' file in the U-Boot source tree.
+
+\section{Image Install Instructions} \label{}
+There are two ways to download a prepaired U-Boot or Linux ROM image into the 
+onboard SDRAM, and programming to the flash. One way is through the UART1 
+serial port with Kermit protocol, the other is via Ethernet with TFTP 
+protocol. The former is slower but more sophisticated.
+
+When you get a `raw' development board, you must learn to using the ADI VDSP 
+to download the RAM U-Boot image through the ADI Emulator, then using the 
+running RAM U-Boot to download and programming a ROM U-Boot into the onboard 
+flash. That is the beginning.
+
+\subsection{The First Time} \label{}
+\begin{enumerate}
+  \item Get or Build(refer to section \ref{uboot:build}) a RAM and a ROM 
+    U-Boot image, make sure the RAM version is in ELF binary format and the 
+    ROM version is a raw binary image.
+  \item Connect the development board to the ADI Emulator via JTAG, and to 
+    a host via RS-232 serial port.
+  \item Running the ICE Test utility.
+  \item Running the VDSP to detect the BF533/BF561 development board.
+  \item Download the ELF binary format RAM U-Boot image.
+  \item Modify the PC Counter register value to the entry point of the RAM 
+    U-Boot image, typically 0x1000000.
+  \item Modify some other registers such as `PLL\_CTL', `PLL\_DIV',
+    `UART\_DLL' etc. Typically as show in figure \ref{fig:reg}.
+  \item Run a serial terminal(Typically HyperTerminal in MS Windows, minicom 
+  in GNU/Linux) connected to the corresponding port, and configure baudrate,
+  parity bit, and bits correctly(typically 115200 8N1).
+  \item Press \texttt{<F5>} to run U-Boot image from current PC counter.
+  \item Using the running U-Boot to download and programming a ROM U-Boot 
+    image to the onboard flash. At first, download the image, typically
+    \begin{quote} \ttfamily
+      BOOT> loadb 1000000
+    \end{quote}
+    After this, send a ROM U-Boot image by Kermit protocol from the host 
+    terminal.
+
+    When transfered successfully, programming to the flash, typically
+    \begin{quote} \ttfamily
+      BOOT> fl 20000000 1000000 20000
+    \end{quote}
+    Please refer to the last two subsections of this 
+    section(\ref{uboot:img-serial}, \ref{uboot:img-eth}) and section 
+    \ref{uboot:using} for more details.
+\end{enumerate}
+
+\subsection{Prepairing an Image for Download} \label{}
+If you needn't to compress or composit your binary images both U-Boot and 
+$\muup$Clinux, you can jump over this section. Otherwise you must learn to use 
+the `mkimage' utility to generate a compressed or multiple image.
+
+The `mkimage' is distributed with the U-Boot, you can find it in `tools' 
+directory under the root directory of the U-Boot source tree.
+
+Typically, we need compress the $\muup$Clinux raw binary image(the following 
+commands all running in the root directory of the U-Boot source tree) for 
+reducing the flash using:
+\begin{quote} \ttfamily
+  \$ gzip -9 -c /path/to/linux.bin $>$ linux-bin.gz
+
+  \$ ./tools/mkimage -A blackfin -O uClinux -T kernel -C gzip $\backslash$ \\
+    -a 1000 -e 1000 -n "Blackfin uClinux System" $\backslash$ \\
+    -d linux-bin.gz zImage.bin
+\end{quote}
+That generate a gzip compressed $\muup$Clinux image named with `zImage.bin'.
+
+NOTE: Please specify the real path of the builded linux.bin of your got 
+$\muup$Clinux distribution.
+
+Run mkimage with no arguments to show usage:
+\begin{quote} \ttfamily
+  \$ ./tools/mkimage
+\end{quote}
+
+Indeed, you can do
+\begin{quote} \ttfamily
+  \$ make zImage.bin
+\end{quote}
+in \texttt{<ROOT\_OF\_U-BOOT>} or \texttt{<ROOT\_OF\_LINUX>} to generate 
+typical `zImage.bin' and put it in \texttt{/tftpboot}.
+
+\subsection{Programming Through the Serial Port} \label{uboot:img-serial}
+\begin{enumerate}
+  \item Connect UART1 on the HHBF533/HHBF561 development board to the PC 
+    serial port.
+  \item Running and configuring a host serial terminal(Typically Hyper 
+    Terminal in MS Windows, or minicom on GNU/Linux) on the corresponding port 
+    in `115200 8N1' configuration.
+  \item Execute the `loadb' command with a argument specifying loading address 
+    after the U-Boot prompt. e.g.:
+    \begin{quote} \ttfamily
+      BOOT> loadb 1000000
+    \end{quote}
+  \item Send a binary image(typically u-boot.bin or zImage.bin) in the host 
+    terminal by Kermit protocol.
+  \item Programming the image into the onboard flash from loading address.  
+    e.g.:
+    \begin{quote} \ttfamily
+      BOOT> fl 20000000 1000000
+    \end{quote}
+    NOTE: If didn't specify image-size argument, the command will 
+    automatically detect it from the environment variable which set after 
+    download transfer
+    successfully.
+\end{enumerate}
+
+\subsection{Programming Through the Ethernet} \label{uboot:img-eth}
+\begin{enumerate}
+  \item Copy the image into the TFTP server root directory, typically
+    \begin{quote} \ttfamily
+      \$ cp -f /path/to/u-boot.bin /tftpboot/
+
+      \$ cp -f /path/to/zImage.bin /tftpboot/
+    \end{quote}
+  \item Check the TFTP server daemon is correctly running.
+    \begin{quote} \ttfamily
+      \$ /etc/init.d/tftpd restart
+    \end{quote}
+  \item Connect UART1 on the HHBF533/HHBF561 development board to the PC 
+    serial port.
+  \item Running and configuring a host serial terminal(Typically Hyper 
+    Terminal in MS Windows, or minicom on GNU/Linux) on the corresponding port 
+    in `115200 8N1' configuration.
+  \item Execute the `tftp' command with arguments specifying loading address 
+    and image  file name to download a binary image file after the U-Boot 
+    prompt. Typically,
+    \begin{quote} \ttfamily
+      BOOT> tftp 1000000 zImage.bin
+    \end{quote}
+  \item Programming the image into the onboard flash from loading address.  
+    e.g.:
+    \begin{quote} \ttfamily
+      BOOT> fl 20000000 1000000
+    \end{quote}
+    NOTE: If didn't specify image-size argument, the command will 
+    automatically detect it from the environment variable which set after 
+    download transfer
+    successfully.
+\end{enumerate}
+
+\subsection{Typicall Memory Map} \label{}
+\begin{table}[!htbp]
+  \caption{HHBF533 Memory Map in U-Boot Stage} \label{hhbf561-mem}
+  \centering
+\begin{tabular}{||c|l||}
+  \hline \hline
+  \multicolumn{2}{||c||}{SDRAM(Total 32 MB)} \\\hline
+  {\ttfamily 0x00000000 - 0x00000fff} & Reserved \\\hline
+  {\ttfamily 0x00001000 - 0x00ffffff} & $\muup$Clinux Running Usage \\\hline
+  {\ttfamily 0x01000000 - 0x015fffff} & Reserved for Downloading \\\hline
+  {\ttfamily 0x01600000 - 0x018fffff} & U-Boot Running Usage \\\hline
+  {\ttfamily 0x01900000 - 0x01ffffff} & Reserved \\\hline
+
+  \hline
+  \multicolumn{2}{||c||}{FLASH(Total 2 MB)} \\\hline
+  {\ttfamily 0x20000000 - 0x2002ffff} & U-Boot Binary Image \\\hline
+  {\ttfamily 0x20030000 - 0x2003ffff} & U-Boot Environment Storage \\\hline
+  {\ttfamily 0x20040000 - 0x201fffff} & $\muup$Clinux Binary Image \\\hline
+
+  \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+  \caption{HHBF561 Memory Map in U-Boot Stage} \label{hhbf561-mem}
+  \centering
+\begin{tabular}{||c|l||}
+  \hline \hline
+  \multicolumn{2}{||c||}{SDRAM(Total 64 MB)} \\\hline
+  {\ttfamily 0x00000000 - 0x00000fff} & Reserved \\\hline
+  {\ttfamily 0x00001000 - 0x00ffffff} & $\muup$Clinux Running Usage \\\hline
+  {\ttfamily 0x01000000 - 0x015fffff} & Reserved for Downloading \\\hline
+  {\ttfamily 0x01600000 - 0x018fffff} & U-Boot Running Usage \\\hline
+  {\ttfamily 0x01900000 - 0x03ffffff} & Reserved \\\hline
+
+  \hline
+  \multicolumn{2}{||c||}{FLASH(Total 16 MB)} \\\hline
+  {\ttfamily 0x20000000 - 0x2003ffff} & U-Boot Binary Image \\\hline
+  {\ttfamily 0x20040000 - 0x2005ffff} & U-Boot Environment Storage \\\hline
+  {\ttfamily 0x20060000 - 0x207fffff} & $\muup$Clinux Binary Image \\\hline
+  {\ttfamily 0x20800000 - 0x20ffffff} & Reserved \\\hline
+
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Using U-Boot} \label{uboot:using}
+\subsection{Monitor Commands}
+Type ``help'' for showing all the monitor commands implementation and compiled 
+in.
+
+Type ``help \texttt{<command>}'' for detailed description of a special monitor 
+command.
+
+e.g.:
+\begin{quote} \ttfamily
+  BOOT> help
+
+  BOOT> help fl
+\end{quote}
+All implemented command show as following:
+\begin{verbatim}
+BOOT> help
+
+?       - alias for 'help'                                                      
+askenv  - get environment variables from stdin                                  
+autoscr - run script from memory                                                
+base    - print or set address offset                                           
+bdinfo  - print Board Info structure                                            
+bootelf - Boot from an ELF image in memory                                      
+bootm   - boot application image from memory                                    
+bootp   - boot image via network using BootP/TFTP protocol                      
+bootvx  - Boot vxWorks from an ELF image                                        
+cmp     - memory compare                                                        
+coninfo - print console devices and informations                                
+cp      - memory copy                                                           
+crc32   - checksum calculation                                                  
+dcache  - enable or disable data cache                                          
+echo    - echo args to console                                                  
+erase   - erase FLASH memory                                                    
+fl      - flush a file to FLASH memory                                          
+flinfo  - print FLASH memory information                                        
+go      - start application at address 'addr'                                   
+help    - print online help
+icache  - enable or disable instruction cache                                   
+iminfo  - print header information for application image                        
+in      - read data from an IO port                                             
+irqinfo - print information about IRQs                                          
+itest   - return true/false on integer compare                                 
+loadb   - load binary file over serial line (kermit mode)                       
+loop    - infinite loop on address range                                        
+md      - memory display                                                        
+mm      - memory modify (auto-incrementing)                                     
+mtest   - simple RAM test                                                       
+mw      - memory write (fill)                                                   
+nm      - memory modify (constant address)                                      
+oc      - over clocking                                                         
+out     - write datum to IO port                                                
+ping    - send ICMP ECHO_REQUEST to network host                                
+printenv- print environment variables                                           
+protect - enable or disable FLASH write protection                              
+rarpboot- boot image via network using RARP/TFTP protocol                       
+reset   - Perform RESET of the CPU                                              
+run     - run commands in an environment variable                               
+saveenv - save environment variables to persistent storage                      
+setenv  - set environment variables                                             
+sleep   - delay execution for some time
+tftpboot- boot image via network using TFTP protocol                            
+version - print monitor version                                                 
+BOOT>
+\end{verbatim}
+
+\subsection{Configuring U-Boot} \label{}
+U-Boot supports user configuration using Environment Variables which
+can be made persistent by saving to Flash memory.
+
+Environment Variables are set using "setenv", printed using
+"printenv", and saved to Flash using "saveenv". Using "setenv"
+without a value can be used to delete a variable from the
+environment. As long as you don't save the environment you are
+working with an in-memory copy. In case the Flash area containing the
+environment is erased by accident, a default environment is provided.
+
+%Some configuration options can be set using Environment Variables:
+
+\section{Build U-Boot for HHBF533/HHBF561} \label{uboot:build}
+When building the U-Boot in the first time, you must first run the following 
+commands in the root directory of the U-Boot source tree:
+\begin{quote} \ttfamily
+  \$ cd <ROOT\_OF\_U-BOOT>
+
+  \$ make clean
+
+  \$ make mrproper
+
+  \$ make ezkit533\_config
+\end{quote}
+NOTE: Please replace the \texttt{<ROOT\_OF\_U-BOOT>} with the real path of the 
+root directory of the U-Boot source tree.
+
+NOTE: If you got HHBF561, you could also do `make ezkit533\_config'!
+
+Then to build a ROM U-Boot, typing:
+\begin{quote} \ttfamily
+  \$ make clean
+
+  \$ make all
+\end{quote}
+
+to build a RAM U-Boot, typing:
+\begin{quote} \ttfamily
+  \$ make clean
+
+  \$ make u-boot.ram
+\end{quote}
+
+NOTE: The default loading address(entry point or text base address) of the RAM 
+U-Boot image is at 0x1000000.
+
+\section{Frequently Asked Questions} \label{}
+Collecting \ldots \ldots
+
+\iffalse
+\newpage
+\thebibliography{99}
+\makeatletter \renewcommand\@biblabel[1]{#1} \makeatother
+%\cite[append-info]{keyword}
+%\begin{thebibliography}{label-style}
+%\bibitem[label]{keyword}text-item
+\bibitem[\HandRight]{mp3ext}
+    ``{\it MP3 Extensions}'', Alex Beregszaszi, November 28, 2003.
+   (\href{http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}
+	 {http://home.pcisys.net/~melanson/codecs/mp3extensions.txt}) \\
+    {\sl provide the informal explaination of MP3 Xing VBR header,
+	 LAME header, etc.}
+%\end{thebibliography}
+\nocite{*}
+%\bibliography{biblio}	% 参考资料
+%\bibliographystyle{plain}	% unsrt, alpha, abbrev
+
+\newpage
+\begin{appendix}	% 附录
+    \renewcommand{\thesection}{附录\Alph{section}}
+    %\addcontentsline{toc}{section}{\thesection~~}
+    \appendix \section{Part of C sources}
+    hhhhhhhh \ding{223}
+
+    含含糊糊含含糊糊黑糊糊
+\end{appendix}
+\fi
+
+%\printidx
+\end{CJK} \end{document}
+
+ %%%%%%%%%%%%%%%%%%%% End Of File: u-boot.tex %%%%%%%%%%%%%%%%%%%%
